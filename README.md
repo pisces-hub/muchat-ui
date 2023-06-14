@@ -2,13 +2,22 @@
 
 ## 介绍
 
-`MuChat`，中文：沐聊。
+`MuChat`前端项目。
 一款基于Netty+MQ的高性能IM解决方案，天然的支持水平扩展，代码全部免费开源
+
+## 后端地址
+https://github.com/pisces-hub/muchat
 
 
 ## 体验地址
 http://43.138.164.74/
 账号：admin/123456
+
+
+## 运行
+npm install
+
+npm run serve
 
 
 ## 系统架构

@@ -28,11 +28,11 @@
 
           <div class="operate-icons">
             <a
-                href="https://gitee.com/xiaochangbai/new-muchat"
+                href="https://github.com/pisces-hub/muchat"
                 target="_blank"
-                title="Gitee"
+                title="Github"
             >
-              <i class="operate-icon icon-gitee" />
+              <i class="operate-icon icon-github" />
             </a>
           </div>
 
@@ -343,8 +343,8 @@
     margin-top: 10vh;
     border-radius: 16px;
   }
-  .icon-gitee {
-    background-image: url('~@/assets/icons/gitee.png');
+  .icon-github {
+    background-image: url('~@/assets/icons/github.png');
   }
   .icon-friend-list {
     background-image: url('~@/assets/icons/friend-list.png');

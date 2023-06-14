@@ -2,7 +2,7 @@
 	<el-container>
 		<el-aside width="250px" class="l-chat-box">
 			<div class="l-chat-header">
-				<el-input width="200px" placeholder="搜索" v-model="searchText">
+				<el-input width="200px" placeholder="搜索聊记录" v-model="searchText">
 					<el-button slot="append" icon="el-icon-search"></el-button>
 				</el-input>
 			</div>
@@ -12,6 +12,9 @@
 					 :active="index === chatStore.activeIndex"></chat-item>
 				</div>
 			</el-scrollbar>
+      <div v-if="chatStore.chats.length<1" style="margin-top: 20px;color: rgb(1 2 2 / 55%);">
+        空空如也～
+      </div>
 		</el-aside>
 		<el-container class="r-chat-box">
 			<chat-box v-show="activeChat.targetId>0" :chat="activeChat"></chat-box>

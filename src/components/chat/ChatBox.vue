@@ -20,25 +20,30 @@
 					</el-main>
 					<el-footer height="200px" class="im-chat-footer">
 						<div class="chat-tool-bar">
-							<div title="表情" class="icon iconfont icon-biaoqing" ref="emotion" @click="switchEmotionBox()">
+							<div title="表情"  ref="emotion" @click="switchEmotionBox()">
+                <i class="operate-icon icon-chat-emotion" />
 							</div>
 							<div title="发送图片">
 								<file-upload :action="imageAction" :maxSize="5*1024*1024" :fileTypes="['image/jpeg', 'image/png', 'image/jpg', 'image/webp','image/gif']"
 								 @before="handleImageBefore" @success="handleImageSuccess" @fail="handleImageFail">
-									<i class="el-icon-picture-outline"></i>
+                  <i class="operate-icon icon-chat-images" />
 								</file-upload>
 							</div>
 							<div title="发送文件">
 								<file-upload :action="fileAction" :maxSize="1000*1024*1024" @before="handleFileBefore" @success="handleFileSuccess"
 								 @fail="handleFileFail">
-									<i class="el-icon-wallet"></i>
+                  <i class="operate-icon icon-chat-file" />
 								</file-upload>
 							</div>
-							<div title="发送语音" class="el-icon-microphone" @click="showVoiceBox()">
+							<div title="发送语音" @click="showVoiceBox()">
+                <i class="operate-icon icon-chat-audio" />
 							</div>
-							<div title="视频聊天" v-show="chat.type=='PRIVATE'" class="el-icon-phone-outline" @click="showVideoBox()">
+							<div title="视频聊天" v-show="chat.type=='PRIVATE'" @click="showVideoBox()">
+                <i class="operate-icon icon-chat-video" />
 							</div>
-							<div title="聊天记录" class="el-icon-chat-dot-round" @click="showHistoryBox()"></div>
+							<div title="聊天记录" @click="showHistoryBox()">
+                <i class="operate-icon icon-chat-history" />
+              </div>
 						</div>
 						<textarea v-model="sendText" ref="sendBox" class="send-text-area" :disabled="lockMessage" @keydown.enter="sendTextMessage()"></textarea>
 						<div class="im-chat-send">
@@ -516,5 +521,35 @@
 			border: #dddddd solid 1px;
 			animation: rtl-drawer-in .3s 1ms;
 		}
+    .operate-icon {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+    .icon-chat-emotion {
+      background-image: url('~@/assets/icons/chat-emetion.png');
+    }
+    .icon-chat-audio {
+      background-image: url('~@/assets/icons/chat-audio.png');
+    }
+    .icon-chat-file {
+      background-image: url('~@/assets/icons/chat-file.png');
+    }
+    .icon-chat-history {
+      background-image: url('~@/assets/icons/chat-history.png');
+    }
+    .icon-chat-images {
+      background-image: url('~@/assets/icons/chat-images.png');
+    }
+    .icon-chat-video {
+      background-image: url('~@/assets/icons/chat-video.png');
+    }
+    .chat-tool-bar i{
+      margin-top: 5px;
+      margin-left: 3px;
+    }
 	}
 </style>
