@@ -1,3 +1,4 @@
+import httpRequest from '../api/httpRequest.js'
 export default {
 
 	state: {
@@ -35,6 +36,20 @@ export default {
 					messages: [],
 				};
 				state.chats.unshift(chat);
+
+				//保存会话
+				httpRequest({
+					url: '/chatSession/save',
+					method: 'post',
+					data:{
+						"targetId":chatInfo.targetId,
+						"chatType":chatInfo.type
+					}
+				}).then((data) => {
+					console.log("会话保存成功，",data)
+				}).catch((err) => {
+					console.log("会话保存失败!",err);
+				});
 			}
 			// 选中会话保持不变
 			if(activeChat){
