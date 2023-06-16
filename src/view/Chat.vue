@@ -12,7 +12,7 @@
 					 :active="index === chatStore.activeIndex"></chat-item>
 				</div>
 			</el-scrollbar>
-      <div v-if="chatStore.chats.length<1" style="margin-top: 20px;color: rgb(1 2 2 / 55%);">
+      <div v-if="chatStore.chats.length<1" class="blank_list">
         空空如也～
       </div>
 		</el-aside>
@@ -91,4 +91,8 @@
 			}
 		}
 	}
+  .blank_list{
+    margin-top: 20px;
+    color: rgb(1 2 2 / 55%);
+  }
 </style>
