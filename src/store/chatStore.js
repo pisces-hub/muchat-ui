@@ -217,9 +217,9 @@ export default {
 						type: item.chatType,
 						showName:item.name,
 						headImage: item.headImage,
-						lastContent:"",
-						lastSendTime: new Date().getTime(),
-						unreadCount: 0,
+						lastContent:item.lastContent,
+						lastSendTime: item.lastSendTime,
+						unreadCount: item.unreadCount,
 						messages: []
 					};
 					tmp.push(chart);
