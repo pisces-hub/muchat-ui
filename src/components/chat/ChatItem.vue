@@ -1,6 +1,6 @@
 <template>
 
-	<div class="chat-item" :class="active ? 'active' : ''">
+	<div class="chat-item" :class="lineStyle()">
 		<div class="left">
 			<head-image :url="chat.headImage" :size="40" :id="chat.type=='PRIVATE'?chat.targetId:0"></head-image>
 			<div v-show="chat.unreadCount>0" class="unread-text">{{chat.unreadCount}}</div>
@@ -22,6 +22,7 @@
 <script>
 	import ChatTime from "./ChatTime.vue";
 	import HeadImage from '../common/HeadImage.vue';
+  import chat from "@/view/Chat.vue";
 	
 	export default {
 		name: "chatItem",
@@ -43,16 +44,40 @@
 				type: Number
 			}
 		},
-		methods: {
-			
+    mounted() {
+    },
+    methods: {
+
+      lineStyle(){
+        let v = [];
+        if (this.chat.type==='GROUP') {
+          v.push("item-group")
+        }
+        if (this.active) {
+          v.push("active");
+        }
+
+        return v;
+      },
 			onClickClose(){
-				this.$emit("del");
+        this.$http({
+          url: "/chatSession/del",
+          method: "DELETE",
+          data: {
+            "targetId":this.chat.targetId,
+            "chatType":this.chat.type
+          }
+        }).then((data) => {
+          this.$emit("del");
+        })
+
 			}
 		}
 	}
 </script>
 
 <style scode lang="scss">
+
 	.chat-item {
 		height: 65px; 
 		display: flex;
@@ -63,13 +88,17 @@
 		padding-right: 5px;
 		background-color: #fafafa;
 		white-space: nowrap;
+
+    &.item-group{
+      background-color: rgba(206 63 202 / 2%);
+    }
 		
 		&:hover {
 			background-color: #eeeeee;
 		}
 
 		&.active {
-			background-color: #dddddd;
+			background-color: #3fcebd38;
 		}
 
 
