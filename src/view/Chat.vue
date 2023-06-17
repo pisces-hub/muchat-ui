@@ -6,7 +6,8 @@
 					<el-button slot="append" icon="el-icon-search"></el-button>
 				</el-input>
 			</div>
-			<el-scrollbar class="l-chat-list" >
+<!--      <p v-text="chatStore.chats"></p>-->
+			<el-scrollbar class="l-chat-list" v-if="chatStore.chats.length>0">
 				<div v-for="(chat,index) in chatStore.chats" :key="index">
 					<chat-item :chat="chat" :index="index" @click.native="handleActiveItem(index)" @del="handleDelItem(chat,index)"
 					 :active="index === chatStore.activeIndex"></chat-item>

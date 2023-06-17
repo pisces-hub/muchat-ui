@@ -6,26 +6,38 @@ export default {
 		chats: []
 	},
 
+	method:{
+		ifSameSession(s1,s2){
+
+			return false;
+		}
+	},
+
 	mutations: {
 		initChatStore(state) {
 			//state.activeIndex = -1;
 		},
 		openChat(state, chatInfo) {
-			let chat = null;
-			let activeChat = state.activeIndex>=0?state.chats[state.activeIndex]:null;
 			for (let i in state.chats) {
-				if (state.chats[i].type == chatInfo.type &&
+				if (state.chats[i].type === chatInfo.type &&
 					state.chats[i].targetId === chatInfo.targetId) {
-					chat = state.chats[i];
+					let newChat = state.chats[i];
 					// 放置头部
 					state.chats.splice(i, 1);
-					state.chats.unshift(chat);
-					break;
+					state.chats.unshift(newChat);
+					return;
 				}
 			}
-			// 创建会话
-			if (chat == null) {
-				chat = {
+			state.activeIndex = -1;
+			httpRequest({
+				url: '/chatSession/save',
+				method: 'post',
+				data:{
+					"targetId":chatInfo.targetId,
+					"chatType":chatInfo.type
+				}
+			}).then((data) => {
+				let tmpChat = {
 					targetId: chatInfo.targetId,
 					type: chatInfo.type,
 					showName: chatInfo.showName,
@@ -35,27 +47,20 @@ export default {
 					unreadCount: 0,
 					messages: [],
 				};
-				state.chats.unshift(chat);
+				this.commit("chatUnshift",tmpChat);
+			}).catch((err) => {
+				console.log("会话保存失败!",err);
+			});
+		},
 
-				//保存会话
-				httpRequest({
-					url: '/chatSession/save',
-					method: 'post',
-					data:{
-						"targetId":chatInfo.targetId,
-						"chatType":chatInfo.type
-					}
-				}).then((data) => {
-					console.log("会话保存成功，",data)
-				}).catch((err) => {
-					console.log("会话保存失败!",err);
-				});
-			}
+		chatUnshift(state,newChat){
+			let activeChat = state.activeIndex>=0?state.chats[state.activeIndex]:null;
+			state.chats.unshift(newChat);
 			// 选中会话保持不变
 			if(activeChat){
 				state.chats.forEach((chat,idx)=>{
 					if(activeChat.type == chat.type
-					&& activeChat.targetId == chat.targetId){
+						&& activeChat.targetId == chat.targetId){
 						state.activeIndex = idx;
 					}
 				})
@@ -182,6 +187,47 @@ export default {
 		resetChatStore(state) {
 			state.activeIndex = -1;
 			state.chats = [];
+		},
+		resetMessageList(state,chatList) {
+			if(chatList===undefined){
+				return;
+			}
+			console.log("resetMessageList",state,chatList)
+			state.activeIndex = -1;
+			state.chats = [];
+			for(const element of chatList) {
+				state.chats.push(element)
+			}
+		},
+		pullMessageList(state) {
+			state.activeIndex = -1;
+			state.chats = [];
+			httpRequest({
+				url: '/chatSession/list',
+				method: 'get',
+			}).then((data) => {
+				if(data===undefined || data.length<1){
+					return;
+				}
+				let tmp = [];
+				for (const element of data) {
+					let item = element;
+					let chart = {
+						targetId:item.targetId,
+						type: item.chatType,
+						showName:item.name,
+						headImage: item.headImage,
+						lastContent:"",
+						lastSendTime: new Date().getTime(),
+						unreadCount: 0,
+						messages: []
+					};
+					tmp.push(chart);
+				}
+				this.commit("resetMessageList",tmp)
+			}).catch((err) => {
+				console.log("查询会话异常!",err);
+			});
 		}
 	},
 
