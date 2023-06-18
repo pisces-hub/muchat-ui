@@ -1,9 +1,12 @@
 import httpRequest from '../api/httpRequest.js'
+import Vue from "vue";
 export default {
 
 	state: {
 		activeIndex: -1,
-		chats: []
+		chats: [
+			{}
+		]
 	},
 
 	method:{
@@ -194,10 +197,10 @@ export default {
 			}
 			console.log("resetMessageList",state,chatList)
 			state.activeIndex = -1;
-			state.chats = [];
 			for(const element of chatList) {
 				state.chats.push(element)
 			}
+			state.chats= chatList;
 		},
 		pullMessageList(state) {
 			state.activeIndex = -1;

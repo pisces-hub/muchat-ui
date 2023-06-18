@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../view/Login'
 import Register from '../view/Register'
 import Home from '../view/Home'
+import OauthLoginResult from '../view/OauthLoginResult'
 // 安装路由
 Vue.use(VueRouter);
 
@@ -17,6 +18,11 @@ export default new VueRouter({
       path: '/login',
       component: Login
     },
+      {
+          name: "oAuthLoginResult",
+          path: '/oAuthLoginResult',
+          component: OauthLoginResult
+      },
     {
       name: "Register",
       path: '/register',

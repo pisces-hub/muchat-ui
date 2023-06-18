@@ -205,8 +205,10 @@
           cancelButtonText: '取消',
           type: 'warning'
         }).then(() => {
-          this.$wsApi.closeWebSocket();
+          sessionStorage.removeItem("accessToken");
+          sessionStorage.removeItem("refreshToken");
           sessionStorage.removeItem("token");
+          this.$wsApi.closeWebSocket();
           location.href = "/";
         });
 
