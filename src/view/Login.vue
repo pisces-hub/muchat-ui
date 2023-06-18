@@ -1,7 +1,7 @@
 <template>
 	<div class="login-view"  >
 			<el-form :model="loginForm"  status-icon :rules="rules" ref="loginForm"
-               label-width="60px" class="web-ruleForm" @keyup.enter.native="submitForm('loginForm')">
+               label-width="80px" class="web-ruleForm" @keyup.enter.native="submitForm('loginForm')">
 				<div class="login-brand">欢迎登陆</div>
 				<el-form-item label="用户名" prop="userName">
 					<el-input type="userName" v-model="loginForm.userName" placeholder="请输入用户名" autocomplete="off"></el-input>
@@ -12,6 +12,10 @@
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" @click="submitForm('loginForm')">登陆</el-button>
+          <el-button title="匿名登录～" class="anonymousLoginButton" @click="anonymousLogin()">
+            <i class="class-anonymous-button-icon"></i>
+            <b>匿名登录</b>
+          </el-button>
 				</el-form-item>
 
         <div style="line-height: 40px;">
@@ -37,6 +41,9 @@
 </template>
 
 <script>
+
+import FingerprintJS from '@fingerprintjs/fingerprintjs'
+
 	export default {
 		name: "login",
 		data() {
@@ -73,6 +80,17 @@
 			};
 		},
 		methods: {
+      anonymousLogin(){
+        FingerprintJS.load().then(fp => {
+              // The FingerprintJS agent is ready.
+              // Get a visitor identifier when you'd like to.
+              fp.get().then(result => {
+                // This is the visitor identifier:
+                const visitorId = result.visitorId;
+                alert(visitorId);
+              });
+        });
+      },
       oauth2LoginHandler(type){
         this.$http({
           url: "/connect/login/web/"+type,
@@ -157,7 +175,7 @@
 		
 		.web-ruleForm {
 			height: 340px;
-      width: 340px;
+      width: 380px;
 			padding: 20px;
 			margin-top: 150px ;
 			background: rgba(255,255,255,.75);
@@ -182,6 +200,25 @@
         flex-direction: row-reverse;
         line-height: 40px;
 			}
+      .anonymousLoginButton{
+        background-color: #eeeeee;
+        color: #0eaefafa;
+        vertical-align:middle;
+        &:hover {
+          background-color: #4a414ad9;
+        }
+      }
+      .class-anonymous-button-icon{
+        vertical-align:middle;
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        margin-right: 10px;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+        background-image: url('~@/assets/icons/2.svg');
+      }
 		}
 	}
 
