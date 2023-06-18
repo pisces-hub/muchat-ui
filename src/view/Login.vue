@@ -13,9 +13,24 @@
 				<el-form-item>
 					<el-button type="primary" @click="submitForm('loginForm')">登陆</el-button>
 				</el-form-item>
-				<div class="register">
-					<router-link to="/register">没有账号,前往注册</router-link>
-				</div>
+
+        <div style="line-height: 40px;">
+          <span class="el-form-item__label">其他方式登录：</span>
+          <a class="login-link" title="Gitee" @click="oauth2LoginHandler('GITEE')">
+            <i class="operate-icon icon-gitee" />
+          </a>
+          <a class="login-link" title="Github" @click="oauth2LoginHandler('GITHUB')">
+            <i class="operate-icon icon-github" />
+          </a>
+
+          <i class="register">
+            <router-link to="/register">注册</router-link>
+          </i>
+        </div>
+
+<!--				<div >-->
+<!--					-->
+<!--				</div>-->
 			</el-form>
 			
 	</div>
@@ -42,8 +57,8 @@
 			};
 			return {
 				loginForm: {
-					userName: 'admin',
-					password: '123456'
+					userName: '',
+					password: ''
 				},
 				rules: {
 					userName: [{
@@ -58,6 +73,16 @@
 			};
 		},
 		methods: {
+      oauth2LoginHandler(type){
+        this.$http({
+          url: "/connect/login/web/"+type,
+          method: 'get',
+        }).then((data) => {
+          window.open(data,"_self");
+        }).catch((err) => {
+          this.$message.error("服务异常!",err);
+        });
+      },
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
@@ -69,10 +94,9 @@
 							.then((data) => {
 								// 保存密码到cookie(不安全)
 								this.setCookie('username',this.loginForm.userName);
-								this.setCookie('password',this.loginForm.password);
 								// 保存token
-								sessionStorage.setItem("accessToken",data.accessToken);
-								sessionStorage.setItem("refreshToken",data.refreshToken);
+                sessionStorage.setItem("accessToken",data.accessToken);
+                sessionStorage.setItem("refreshToken",data.refreshToken);
                 this.$store.commit("pullMessageList");
 								this.$message.success("登陆成功");
 								this.$router.push("/home/chat");
@@ -115,10 +139,8 @@
       var usernameCache = this.getCookie("username");
       if(usernameCache!=null & usernameCache.trim()!==''){
         this.loginForm.userName =usernameCache;
-        // cookie存密码并不安全，暂时是为了方便
-        this.loginForm.password = this.getCookie("password");
       }
-		}
+		},
 	}
 </script>
 
@@ -155,14 +177,30 @@
 			}
 			
 			.register {
-				display: flex;
-				flex-direction: row-reverse;
-				line-height: 40px;
-				text-align: left;
-				padding-left: 20px;
+        position: relative;
+        float: right;
+        flex-direction: row-reverse;
+        line-height: 40px;
 			}
 		}
 	}
 
+  .operate-icon {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    margin-right: 20px;
+    vertical-align:middle;
+    cursor:pointer;
+  }
+  .icon-github {
+    background-image: url('~@/assets/icons/github.png');
+  }
+  .icon-gitee {
+    background-image: url('~@/assets/icons/gitee.png');
+  }
 	
 </style>
