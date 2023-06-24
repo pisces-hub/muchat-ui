@@ -26,7 +26,6 @@ let initWebSocket = async () => {
 			if (sendInfo.cmd == 0) {
 				hasLogin = true;
 				heartCheck.start()
-				console.log('WebSocket登录成功')
 				// 登录成功才算连接完成
 				openCallBack && openCallBack();
 			}
@@ -39,11 +38,9 @@ let initWebSocket = async () => {
 			}
 		}
 		websock.onclose = function(e) {
-			console.log('WebSocket连接关闭')
 			isConnect = false; //断开后修改标识
 		}
 		websock.onopen = function() {
-			console.log("WebSocket连接成功");
 			isConnect = true;
 			// 发送登录命令
 			let loginInfo = {
@@ -56,12 +53,10 @@ let initWebSocket = async () => {
 
 		// 连接发生错误的回调方法
 		websock.onerror = function() {
-			console.log('WebSocket连接发生错误')
 			isConnect = false; //连接断开修改标识
 			reConnect();
 		}
 	} catch (e) {
-		console.log("尝试创建连接失败",e);
 		reConnect(); //如果无法连接上webSocket 那么重新连接！可能会因为服务器重新部署，或者短暂断网等导致无法创建连接
 	}
 };
@@ -73,14 +68,12 @@ let  findWsUrl = () =>{
 		method: 'get'
 	}).then((data) => {
 		url ="ws://"+data.ip+":"+data.port+"/im";
-		console.log("ws地址",url);
 		return Promise.resolve(url);
 	})
 }
 
 //定义重连函数
 let reConnect = () => {
-	console.log("尝试重新连接");
 	if (isConnect) return; //如果已经连上就不在重连了
 	rec && clearTimeout(rec);
 	rec = setTimeout(function() { // 延迟5秒重连  避免过多次过频繁请求重连
@@ -99,7 +92,6 @@ var heartCheck = {
 	timeoutObj: null, //延时发送消息对象（启动心跳新建这个对象，收到消息后重置对象）
 	start: function() {
 		if(isConnect){
-			console.log('发送WebSocket心跳')
 			let heartBeat = {
 				cmd: 1,
 				data: {
@@ -123,7 +115,6 @@ var heartCheck = {
 
 // 实际调用的方法
 function sendMessage(agentData) {
-	// console.log(globalCallback)
 	if (websock.readyState === websock.OPEN) {
 		// 若是ws开启状态
 		websock.send(JSON.stringify(agentData))

@@ -35,7 +35,6 @@ http.interceptors.response.use(async response => {
 	} else if (response.data.code == 400) {
 		router.replace("/login");
 	} else if (response.data.code == 401) {
-		console.log("token失效，尝试重新获取")
 		let refreshToken = sessionStorage.getItem("refreshToken");
 		if (!refreshToken) {
 			router.replace("/login");

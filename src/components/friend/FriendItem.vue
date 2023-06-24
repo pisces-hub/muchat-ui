@@ -27,7 +27,6 @@
 		},
 		methods:{
 			handleDel(){
-				console.log("11111111111111111111")
 				this.$emit('del',this.friend,this.index)
 			}
 		},

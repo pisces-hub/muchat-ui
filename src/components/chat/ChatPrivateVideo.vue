@@ -89,7 +89,6 @@
 					},
 					(stream) => {
 						this.stream = stream;
-						console.log(this.stream)
 						this.$refs.mineVideo.srcObject = stream;
 						this.$refs.mineVideo.muted = true;
 						callback(stream)
@@ -132,7 +131,6 @@
 				}
 				this.peerConnection.oniceconnectionstatechange = (event) => {
 					let state = event.target.iceConnectionState;
-					console.log("ICE connection status changed : " + state)
 					if(state == 'connected'){
 						this.resetTime();
 					}

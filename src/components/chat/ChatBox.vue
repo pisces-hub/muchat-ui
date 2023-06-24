@@ -219,7 +219,6 @@
 				this.showVoice = false;
 			},
 			showVideoBox() {
-				console.log(this.friend)
 				this.$store.commit("showChatPrivateVideoBox", {
 					friend: this.friend,
 					master: true
@@ -340,9 +339,7 @@
 					this.group = group;
 					this.$store.commit("updateChatFromGroup", group);
 					this.$store.commit("updateGroup", group);
-
 				});
-
 				this.$http({
 					url: `/group/members/${groupId}`,
 					method: 'get'
@@ -357,7 +354,6 @@
 					method: 'get'
 				}).then((friend) => {
 					this.friend = friend;
-					console.log(this.friend)
 					this.$store.commit("updateChatFromFriend", friend);
 					this.$store.commit("updateFriend", friend);
 				})
