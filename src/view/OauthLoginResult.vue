@@ -30,14 +30,10 @@ export default {
       this.loginState = false;
       this.errorMsg = Base64.decode(obj.errorMsg);
     }else{
-      console.log("result1",obj)
       let result = Base64.decode(obj.oAuthInfo);
-      console.log("result",result)
       result = result.substring(0,result.lastIndexOf("}")+1);
-      console.log(result)
       let loginObj = JSON.parse(result.trim());
       this.loginState = true;
-      console.log("loginObj",loginObj);
       sessionStorage.setItem("accessToken",loginObj.accessToken);
       sessionStorage.setItem("refreshToken",loginObj.refreshToken);
       this.$store.commit("pullMessageList");
@@ -57,7 +53,6 @@ export default {
       for(const element of cs_arr) {         //遍历数组，拿到json对象
         csObj[element.split('=')[0]] = element.split('=')[1]
       }
-      console.log("aaa,",csObj)
       return csObj;
     }
   }

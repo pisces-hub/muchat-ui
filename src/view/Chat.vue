@@ -3,7 +3,7 @@
 		<el-aside width="250px" class="l-chat-box">
 			<div class="l-chat-header">
 				<el-input width="200px" placeholder="搜索聊记录" v-model="searchText">
-					<el-button slot="append" icon="el-icon-search"></el-button>
+					<el-button slot="append" @click="searchChatSessionList()" icon="el-icon-search"></el-button>
 				</el-input>
 			</div>
 			<el-scrollbar class="l-chat-list" v-if="chatStore.chats.length>0">
@@ -17,7 +17,7 @@
       </div>
 		</el-aside>
 		<el-container class="r-chat-box">
-			<chat-box v-show="activeChat.targetId>0" :chat="activeChat"></chat-box>
+			<chat-box v-show="activeChat.targetId>=0" :chat="activeChat"></chat-box>
 		</el-container>
 	</el-container>
 </template>
@@ -41,6 +41,9 @@
 			}
 		},
 		methods: {
+      searchChatSessionList(){
+        this.$store.commit("pullMessageList");
+      },
 			handleActiveItem(index) {
 				this.$store.commit("activeChat", index);
 			},

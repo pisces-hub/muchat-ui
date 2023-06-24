@@ -145,7 +145,6 @@
 				if(msg.type >= this.$enums.MESSAGE_TYPE.RTC_CALL 
 				&& msg.type <= this.$enums.MESSAGE_TYPE.RTC_CANDIDATE){
 					// 呼叫
-					console.log(msg)
 					if(msg.type == this.$enums.MESSAGE_TYPE.RTC_CALL
 					|| msg.type == this.$enums.MESSAGE_TYPE.RTC_CANCEL){
 						this.$store.commit("showVideoAcceptorBox",friend);

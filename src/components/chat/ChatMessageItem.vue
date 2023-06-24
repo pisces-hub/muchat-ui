@@ -156,7 +156,6 @@
 			}
 		},
 		mounted() {
-			//console.log(this.msgInfo);
 		}
 	}
 </script>

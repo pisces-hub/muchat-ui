@@ -19,11 +19,11 @@
 			</el-scrollbar>
 		</el-aside>
 		<el-container class="r-group-box">
-			<div class="r-group-header" v-show="activeGroup.id">
+			<div class="r-group-header" v-show="activeGroup.id>=0">
 				{{activeGroup.remark}}({{groupMembers.length}})
 			</div>
 			<el-scrollbar class="r-group-container">
-				<div v-show="activeGroup.id">
+				<div v-show="activeGroup.id>=0">
 					<div class="r-group-info">
 						<div>
 							<file-upload class="avatar-uploader" :action="imageAction" :disabled="!isOwner" :showLoading="true"

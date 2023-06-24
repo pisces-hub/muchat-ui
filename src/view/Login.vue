@@ -48,14 +48,12 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
 		name: "login",
 		data() {
 			var checkUsername = (rule, value, callback) => {
-				console.log("checkUsername");
 				if (!value) {
 					return callback(new Error('请输入用户名'));
 				}
 				callback();
 			};
 			var checkPassword = (rule, value, callback) => {
-				console.log("checkPassword");
 				if (value === '') {
 					callback(new Error('请输入密码'));
 				}
@@ -87,7 +85,17 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
               fp.get().then(result => {
                 // This is the visitor identifier:
                 const visitorId = result.visitorId;
-                alert(visitorId);
+                this.$http({
+                  url: "/anonymousLogin",
+                  method: 'post',
+                  data: {
+                    "anonymouId":visitorId
+                  }
+                }).then((data) => {
+                      this.successLogin(data);
+                    }).catch((err) => {
+                  this.$message.error("服务异常!",err);
+                });
               });
         });
       },
@@ -110,14 +118,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
 								data: this.loginForm
 							})
 							.then((data) => {
-								// 保存密码到cookie(不安全)
-								this.setCookie('username',this.loginForm.userName);
-								// 保存token
-                sessionStorage.setItem("accessToken",data.accessToken);
-                sessionStorage.setItem("refreshToken",data.refreshToken);
-                this.$store.commit("pullMessageList");
-								this.$message.success("登陆成功");
-								this.$router.push("/home/chat");
+								this.successLogin(data);
 							}).catch((err) => {
               this.$message.error("服务异常!",err);
             });
@@ -125,6 +126,16 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
 					}
 				});
 			},
+      successLogin(data){
+        // 保存密码到cookie(不安全)
+        this.setCookie('username',this.loginForm.userName);
+        // 保存token
+        sessionStorage.setItem("accessToken",data.accessToken);
+        sessionStorage.setItem("refreshToken",data.refreshToken);
+        this.$store.commit("pullMessageList");
+        this.$message.success("登陆成功");
+        this.$router.push("/home/chat");
+      },
 			resetForm(formName) {
 				this.$refs[formName].resetFields();
 			},

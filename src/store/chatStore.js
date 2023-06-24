@@ -52,7 +52,6 @@ export default {
 				};
 				this.commit("chatUnshift",tmpChat);
 			}).catch((err) => {
-				console.log("会话保存失败!",err);
 			});
 		},
 
@@ -97,8 +96,8 @@ export default {
 		},
 		insertMessage(state, msgInfo) {
 			// 获取对方id或群id
-			let type = msgInfo.groupId ? 'GROUP' : 'PRIVATE';
-			let targetId = msgInfo.groupId ? msgInfo.groupId : msgInfo.selfSend ? msgInfo.recvId : msgInfo.sendId;
+			let type = msgInfo.groupId>=0 ? 'GROUP' : 'PRIVATE';
+			let targetId = msgInfo.groupId>=0 ? msgInfo.groupId : msgInfo.selfSend ? msgInfo.recvId : msgInfo.sendId;
 			let chat = null;
 			for (let idx in state.chats) {
 				if (state.chats[idx].type == type &&
@@ -195,12 +194,14 @@ export default {
 			if(chatList===undefined){
 				return;
 			}
-			console.log("resetMessageList",state,chatList)
 			state.activeIndex = -1;
 			for(const element of chatList) {
 				state.chats.push(element)
 			}
 			state.chats= chatList;
+			if(chatList.length>0){
+				state.activeIndex = 0;
+			}
 		},
 		pullMessageList(state) {
 			state.activeIndex = -1;
@@ -229,7 +230,6 @@ export default {
 				}
 				this.commit("resetMessageList",tmp)
 			}).catch((err) => {
-				console.log("查询会话异常!",err);
 			});
 		}
 	},

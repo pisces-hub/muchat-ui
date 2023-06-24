@@ -55,7 +55,6 @@
 				this.close();
 			},
 			onCall(msgInfo){
-				console.log("onCall")
 				this.offer = JSON.parse(msgInfo.content);
 				if(this.$store.state.userStore.state == this.$enums.USER_STATE.BUSY){
 					this.failed("对方正忙,暂时无法接听");
