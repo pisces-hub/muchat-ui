@@ -13,12 +13,12 @@
 						<div v-show="unreadCount>0" class="unread-text">{{unreadCount}}</div>
 					</router-link>
 				</el-menu-item>
-				<el-menu-item title="好友">
+				<el-menu-item v-if="accountType!=1" title="好友">
 					<router-link v-bind:to="'/home/friend'">
             <i class="operate-icon icon-friend-list" />
 					</router-link>
 				</el-menu-item>
-				<el-menu-item title="群聊">
+				<el-menu-item v-if="accountType!=1" title="群聊">
 					<router-link v-bind:to="'/home/group'">
             <i class="operate-icon icon-group-list" />
 					</router-link>
@@ -83,7 +83,7 @@
 		data() {
 			return {
 				showSettingDialog: false,
-				
+        accountType:0
 			}
 		},
 		methods: {
@@ -92,6 +92,7 @@
 				this.$store.commit("setUserState", this.$enums.USER_STATE.FREE);
 				this.$store.commit("initStore");
 				this.$wsApi.createWebSocket(userInfo.id);
+        this.accountType = userInfo.accountType;
 				this.$wsApi.onopen(() => {
 					this.pullUnreadMessage();
 				});
@@ -113,16 +114,18 @@
 				})
 			},
 			pullUnreadMessage() {
-				// 拉取未读私聊消息
-				this.$http({
-					url: "/message/private/pullUnreadMessage",
-					method: 'post'
-				});
 				// 拉取未读群聊消息
 				this.$http({
 					url: "/message/group/pullUnreadMessage",
 					method: 'post'
 				});
+        if(this.accountType!==1){
+          // 拉取未读私聊消息
+          this.$http({
+            url: "/message/private/pullUnreadMessage",
+            method: 'post'
+          });
+        }
 			},
 			handlePrivateMessage(msg) {
 				// 好友列表存在好友信息，直接插入私聊消息

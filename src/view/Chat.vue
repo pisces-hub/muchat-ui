@@ -12,12 +12,13 @@
 					 :active="index === chatStore.activeIndex"></chat-item>
 				</div>
 			</el-scrollbar>
+<!--      <p v-text="chatStore.chats"></p>-->
       <div v-if="chatStore.chats.length<1" class="blank_list">
         空空如也～
       </div>
 		</el-aside>
 		<el-container class="r-chat-box">
-			<chat-box v-show="activeChat.targetId>=0" :chat="activeChat"></chat-box>
+			<chat-box v-show="activeChat.targetId!=null" :chat="activeChat"></chat-box>
 		</el-container>
 	</el-container>
 </template>
@@ -51,7 +52,10 @@
 				this.$store.commit("removeChat", index);
 			}
 		},
-		computed: {
+    mounted() {
+      this.$store.commit("pullMessageList");
+    },
+    computed: {
 			chatStore() {
 				return this.$store.state.chatStore;
 			},
@@ -63,7 +67,7 @@
 				}
 				// 当没有激活任何会话时，创建一个空会话，不然控制台会有很多报错
 				let emptyChat = {
-					targetId: -1,
+					targetId: null,
 					showName: "",
 					headImage: "",
 					messages: []

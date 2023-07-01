@@ -1,7 +1,7 @@
 <template>
-	<div class="group-member">
+	<div class="group-member" @click="click" :style="{left: tranLeft, top: tranTop}">
 		<head-image :url="member.headImage" :size="50" :id="member.userId">
-			<div  v-if="showDel" @click.stop="handleDelete()" class="btn-kick el-icon-error"></div>
+			<div v-if="showDel" @click.stop="handleDelete()" class="btn-kick el-icon-error"></div>
 		</head-image>
 		<div class="member-name">{{member.aliasName}}</div>
 
@@ -14,7 +14,10 @@
 		name: "groupMember",
 		components:{HeadImage},
 		data(){
-			return {};
+			return {
+        tranLeft: 0,
+        tranTop: 0
+      };
 		},
 		props:{
 			member:{
@@ -27,6 +30,11 @@
 			}
 		},
 		methods:{
+      click(e){
+        // 根据事件处理参数e下的pageX，PageY来定位div的位置
+        this.tranLeft = e.pageX + 'px'
+        this.tranTop = e.pageY  + 'px'
+      },
 			handleDelete(){
 				this.$emit("del",this.member);
 			}

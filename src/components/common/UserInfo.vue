@@ -1,6 +1,6 @@
 <template>
 	<div class="user-info-mask" @click="$emit('close')">
-		<div class="user-info" :style="{left: pos.x+'px',top: pos.y+'px'}" @click.stop>
+		<div class="user-info"  :style="{left: pos.x+'px',top: pos.y+'px'}" @click.stop>
 			<div class="user-info-box">
 				<div class="avatar">
 					<head-image :url="user.headImageThumb" :size="60" @click.native="showFullImage()"> </head-image>

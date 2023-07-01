@@ -96,8 +96,8 @@ export default {
 		},
 		insertMessage(state, msgInfo) {
 			// 获取对方id或群id
-			let type = msgInfo.groupId>=0 ? 'GROUP' : 'PRIVATE';
-			let targetId = msgInfo.groupId>=0 ? msgInfo.groupId : msgInfo.selfSend ? msgInfo.recvId : msgInfo.sendId;
+			let type = msgInfo.groupId!=null ? 'GROUP' : 'PRIVATE';
+			let targetId = msgInfo.groupId!=null ? msgInfo.groupId : msgInfo.selfSend ? msgInfo.recvId : msgInfo.sendId;
 			let chat = null;
 			for (let idx in state.chats) {
 				if (state.chats[idx].type == type &&
@@ -224,7 +224,7 @@ export default {
 						lastContent:item.lastContent,
 						lastSendTime: item.lastSendTime,
 						unreadCount: item.unreadCount,
-						messages: []
+						messages: "GROUP"===item.chatType?item.groupMessages.toReversed():[]
 					};
 					tmp.push(chart);
 				}
