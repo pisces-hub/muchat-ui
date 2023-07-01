@@ -138,6 +138,9 @@ export default {
       if (this.loadAll) {
         return this.$message.success("已到达顶部");
       }
+      if(this.chat===null || this.chat.type===undefined){
+        return;
+      }
       let param = {}
       if (this.chat.type == 'GROUP') {
         param.groupId = this.chat.targetId;
