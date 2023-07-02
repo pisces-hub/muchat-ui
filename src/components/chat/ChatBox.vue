@@ -16,6 +16,7 @@
                     <li v-if="loading" style="margin-bottom: 80px;" v-loading="loading"
                         element-loading-text="拼命加载中">
                     </li>
+
                     <li v-for="(msgInfo,idx) in chat.messages" :key="idx">
                       <chat-message-item :mine="msgInfo.sendId == mine.id" :headImage="headImage(msgInfo)"
                                          :showName="showName(msgInfo)" :ipAddress="ipAddress(msgInfo)"
@@ -132,6 +133,7 @@ export default {
 
   methods: {
     async loadMessages() {
+      console.log("拉取历史消息：",this.friend);
       if(this.loading){
         return ;
       }
@@ -152,6 +154,9 @@ export default {
         param.lastMessageId = null;
       } else {
         param.lastMessageId = this.chat.messages[0].id;
+      }
+      if(this.chat.friendId===null || this.chat.groupId===null){
+        return ;
       }
       console.log("拉取历史消息，",this.chat,param)
       this.$http({

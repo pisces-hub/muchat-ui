@@ -3,33 +3,44 @@
 			<el-form :model="loginForm"  status-icon :rules="rules" ref="loginForm"
                label-width="80px" class="web-ruleForm" @keyup.enter.native="submitForm('loginForm')">
 				<div class="login-brand">MuChat</div>
-				<el-form-item label="用户名" prop="userName">
-					<el-input type="userName" v-model="loginForm.userName" placeholder="请输入用户名" autocomplete="off"></el-input>
+<!--				<el-form-item label="用户名" prop="userName">-->
+<!--					<el-input type="userName" v-model="loginForm.userName" placeholder="请输入用户名" autocomplete="off"></el-input>-->
 
-				</el-form-item>
-				<el-form-item label="密码" prop="password">
-					<el-input type="password" v-model="loginForm.password" placeholder="请输入密码" autocomplete="off"></el-input>
-				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" @click="submitForm('loginForm')">登陆</el-button>
-          <el-button title="匿名登录～" class="anonymousLoginButton" @click="anonymousLogin()">
-            <i class="class-anonymous-button-icon"></i>
-            <b>匿名登录(官方推荐)</b>
-          </el-button>
-				</el-form-item>
-
-        <div style="line-height: 40px;">
-          <span class="el-form-item__label">其他方式登录：</span>
-          <a class="login-link" title="Gitee" @click="oauth2LoginHandler('GITEE')">
+<!--				</el-form-item>-->
+<!--				<el-form-item label="密码" prop="password">-->
+<!--					<el-input type="password" v-model="loginForm.password" placeholder="请输入密码" autocomplete="off"></el-input>-->
+<!--				</el-form-item>-->
+<!--				<el-form-item>-->
+<!--					<el-button type="primary" @click="submitForm('loginForm')">登陆</el-button>-->
+<!--				</el-form-item>-->
+        <div style="text-align: center;">
+          <a class="login-link" title="Gitee登录" @click="oauth2LoginHandler('GITEE')">
             <i class="operate-icon icon-gitee" />
+            <p style="line-height: 20px;">Gitee登录</p>
           </a>
-          <a class="login-link" title="Github" @click="oauth2LoginHandler('GITHUB')">
+          <a class="login-link" title="Github登录" @click="oauth2LoginHandler('GITHUB')">
             <i class="operate-icon icon-github" />
+            <p style="line-height: 20px;">Github登录</p>
           </a>
+        </div>
 
-          <i class="register">
-            <router-link to="/register">注册</router-link>
-          </i>
+
+        <div style="line-height: 40px;text-align: center;margin-top: 20px;">
+          <el-button title="匿名模式下与常规模式数据不互通" class="anonymousLoginButton" @click="anonymousLogin()">
+            <i class="class-anonymous-button-icon"></i>
+            <b>匿名模式(官方推荐)</b>
+          </el-button>
+<!--          <span class="el-form-item__label">其他方式登录：</span>-->
+<!--          <a class="login-link" title="Gitee" @click="oauth2LoginHandler('GITEE')">-->
+<!--            <i class="operate-icon icon-gitee" />-->
+<!--          </a>-->
+<!--          <a class="login-link" title="Github" @click="oauth2LoginHandler('GITHUB')">-->
+<!--            <i class="operate-icon icon-github" />-->
+<!--          </a>-->
+
+<!--          <i class="register">-->
+<!--            <router-link to="/register">注册</router-link>-->
+<!--          </i>-->
         </div>
 
 <!--				<div >-->
@@ -174,7 +185,6 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
 <style scoped lang="scss">
 	.login-view {
-
 		position: relative;
 		display: flex;
 		justify-content: space-around;
@@ -187,7 +197,7 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
 			height: 340px;
       width: 380px;
 			padding: 20px;
-			margin-top: 150px ;
+			margin-top: 180px ;
 			background: rgba(255,255,255,.75);
 			box-shadow: 0px 0px  1px #ccc;
 			border-radius: 5px;
@@ -202,6 +212,26 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
 				letter-spacing: 2px;
 				text-transform: uppercase;
 				text-align: center;
+        cursor: pointer;
+        font-family: cursive;
+        &:hover {
+          animation: change 2s ease-in-out 0s 1 alternate forwards;
+          @keyframes change {
+            0% {
+              color: rgba(25,55,515,0.2)
+            }
+            30%{
+              color:rgba(215,55,25,0.3)
+            }
+            50% {
+              color: rgba(25,25,255,0.5)
+            }
+            80% {
+              color: rgba(255,255,5,0.8)
+            }
+            100% {color: rgba(2,255,255,1);}
+          }
+        }
 			}
 			
 			.register {
@@ -234,12 +264,11 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
   .operate-icon {
     display: inline-block;
-    width: 28px;
-    height: 28px;
+    width: 48px;
+    height: 48px;
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    margin-right: 20px;
     vertical-align:middle;
     cursor:pointer;
   }
@@ -248,6 +277,15 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
   }
   .icon-gitee {
     background-image: url('~@/assets/icons/gitee.png');
+  }
+  .login-link{
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+    font-family: "Gill Sans", sans-serif;
+    &:hover {
+      color: red;
+    }
   }
 	
 </style>

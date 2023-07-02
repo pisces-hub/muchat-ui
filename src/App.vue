@@ -1,6 +1,10 @@
 <template>
   <div id="app">
 		<router-view></router-view>
+    <div class="web-buttons-info">
+      <p>@Latest update time 2023-07-02 19:25:50</p>
+    </div>
+
   </div>
 </template>
 
@@ -28,4 +32,15 @@ export default {
   background-image: url(~@/assets/images/b3.jpg);
   background-size: cover;
 }
+ .web-buttons-info{
+   text-align: center;
+   position: absolute;
+   color:white;
+   bottom: 1%;
+   width: 100%;
+   cursor: pointer;
+   &:hover {
+     color: palegreen;
+   }
+ }
 </style>

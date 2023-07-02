@@ -191,6 +191,7 @@ export default {
 			state.chats = [];
 		},
 		resetMessageList(state,chatList) {
+			console.log("resetMessageList",state,chatList);
 			if(chatList===undefined){
 				return;
 			}
@@ -224,12 +225,19 @@ export default {
 						lastContent:item.lastContent,
 						lastSendTime: item.lastSendTime,
 						unreadCount: item.unreadCount,
-						messages: "GROUP"===item.chatType?item.groupMessages.toReversed():[]
+						messages: []
 					};
+					if("GROUP"===chart.type){
+						chart.messages = item.groupMessages.toReversed();
+					}else{
+						chart.messages = item.privateMessages.toReversed();
+					}
+
 					tmp.push(chart);
 				}
 				this.commit("resetMessageList",tmp)
 			}).catch((err) => {
+				console.log("pullMessageList",err)
 			});
 		}
 	},
