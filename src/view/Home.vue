@@ -24,8 +24,7 @@
 					</router-link>
 				</el-menu-item>
 
-				<el-menu-item title="Gitee">
-
+				<el-menu-item title="Github">
           <div class="operate-icons">
             <a
                 href="https://github.com/pisces-hub/muchat"
@@ -35,8 +34,20 @@
               <i class="operate-icon icon-github" />
             </a>
           </div>
-
 				</el-menu-item>
+
+        <el-menu-item title="码云">
+          <div class="operate-icons">
+            <a
+                href="https://gitee.com/pisces-hub/muchat"
+                target="_blank"
+                title="Gitee"
+            >
+              <i class="operate-icon icon-gitee" />
+            </a>
+          </div>
+        </el-menu-item>
+
 			</el-menu>
 			<div class="exit-box" @click="handleExit()" title="退出">
         <i class="operate-icon icon-exit" />
@@ -349,6 +360,9 @@
   }
   .icon-github {
     background-image: url('~@/assets/icons/github.png');
+  }
+  .icon-gitee {
+    background-image: url('~@/assets/icons/gitee.png');
   }
   .icon-friend-list {
     background-image: url('~@/assets/icons/friend-list.png');

@@ -7,10 +7,11 @@
 		</div>
 		<el-scrollbar class="group-side-scrollbar">
 			<div class="group-side-member-list">
-				<div class="group-side-invite">
+				<div class="group-side-invite" v-if="group.groupType!==1">
 					<div class="invite-member-btn" title="邀请好友进群聊" @click="showAddGroupMember=true">
 						<i class="el-icon-plus"></i>
 					</div>
+
 					<div class="invite-member-text">邀请</div>
 					<add-group-member :visible="showAddGroupMember" :groupId="group.id" :members="groupMembers" @reload="$emit('reload')"
 					 @close="showAddGroupMember=false"></add-group-member>
@@ -41,7 +42,7 @@
 				<div class="btn-group">
 					<el-button v-show="editing" type="success" @click="handleSaveGroup()">提交</el-button>
 					<el-button v-show="!editing" type="primary" @click="editing=!editing">编辑</el-button>
-					<el-button type="danger" v-show="!isOwner" @click="handleQuit()">退出群聊</el-button>
+					<el-button type="danger" v-show="!isOwner" v-if="group.groupType!==1" @click="handleQuit()">退出群聊</el-button>
 				</div>
 			</el-form>
 		</el-scrollbar>
