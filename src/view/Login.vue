@@ -2,7 +2,7 @@
 	<div class="login-view"  >
 			<el-form :model="loginForm"  status-icon :rules="rules" ref="loginForm"
                label-width="80px" class="web-ruleForm" @keyup.enter.native="submitForm('loginForm')">
-				<div class="login-brand">欢迎登陆</div>
+				<div class="login-brand">MuChat</div>
 				<el-form-item label="用户名" prop="userName">
 					<el-input type="userName" v-model="loginForm.userName" placeholder="请输入用户名" autocomplete="off"></el-input>
 
@@ -14,7 +14,7 @@
 					<el-button type="primary" @click="submitForm('loginForm')">登陆</el-button>
           <el-button title="匿名登录～" class="anonymousLoginButton" @click="anonymousLogin()">
             <i class="class-anonymous-button-icon"></i>
-            <b>匿名登录</b>
+            <b>匿名登录(官方推荐)</b>
           </el-button>
 				</el-form-item>
 
@@ -211,8 +211,8 @@ import FingerprintJS from '@fingerprintjs/fingerprintjs'
         line-height: 40px;
 			}
       .anonymousLoginButton{
-        background-color: #eeeeee;
-        color: #0eaefafa;
+        background-color: #8847e2;
+        color: rgb(95 255 1 / 98%);
         vertical-align:middle;
         &:hover {
           background-color: #4a414ad9;
