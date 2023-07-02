@@ -5,10 +5,11 @@
 			<div class="head-image">
 				<head-image :url="headImage" :id="msgInfo.sendId"></head-image>
 			</div>
+
 			<div class="chat-msg-content">
 				<div class="chat-msg-top">
-					<span>{{showName}}</span>
-					<chat-time :time="msgInfo.sendTime"></chat-time>
+					<span>({{ipAddress}}){{showName}}</span>
+<!--					<chat-time :time="msgInfo.sendTime"></chat-time>-->
 				</div>
 				<div class="chat-msg-bottom" @contextmenu.prevent="showRightMenu($event)">
 					<span class="chat-msg-text" v-if="msgInfo.type==0" v-html="$emo.transform(msgInfo.content)"></span>
@@ -67,6 +68,10 @@
 				type: String,
 				required: true
 			},
+      ipAddress: {
+        type: String,
+        required: false
+      },
 			msgInfo: {
 				type: Object,
 				required: true

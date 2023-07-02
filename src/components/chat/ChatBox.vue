@@ -18,7 +18,7 @@
                     </li>
                     <li v-for="(msgInfo,idx) in chat.messages" :key="idx">
                       <chat-message-item :mine="msgInfo.sendId == mine.id" :headImage="headImage(msgInfo)"
-                                         :showName="showName(msgInfo)"
+                                         :showName="showName(msgInfo)" :ipAddress="ipAddress(msgInfo)"
                                          :msgInfo="msgInfo" @delete="deleteMessage" @recall="recallMessage">
                       </chat-message-item>
                     </li>
@@ -436,6 +436,15 @@ export default {
         this.$store.commit("updateChatFromFriend", friend);
         this.$store.commit("updateFriend", friend);
       })
+    },
+    ipAddress(msgInfo){
+      if (this.chat.type == 'GROUP') {
+        let member = this.groupMembers.find((m) => m.userId == msgInfo.sendId);
+        return member ? member.ipAddress : "";
+      } else {
+        return msgInfo.sendId == this.mine.id ? this.mine.ipAddress : this.chat.ipAddress
+      }
+
     },
     showName(msgInfo) {
       if (this.chat.type == 'GROUP') {
