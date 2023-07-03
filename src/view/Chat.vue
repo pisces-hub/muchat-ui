@@ -26,6 +26,7 @@
 <script>
 	import ChatItem from "../components/chat/ChatItem.vue";
 	import ChatBox from "../components/chat/ChatBox.vue";
+  import httpRequest from "@/api/httpRequest";
 	
 	export default {
 		name: "chat",
@@ -43,7 +44,40 @@
 		},
 		methods: {
       searchChatSessionList(){
-        this.$store.commit("pullMessageList");
+        this.pullSessionList();
+      },
+      pullSessionList() {
+        httpRequest({
+          url: '/chatSession/list',
+          method: 'get',
+        }).then((data) => {
+          if(data===undefined || data.length<1){
+            return;
+          }
+          let tmp = [];
+          for (const element of data) {
+            let item = element;
+            let chart = {
+              targetId:item.targetId,
+              type: item.chatType,
+              showName:item.name,
+              headImage: item.headImage,
+              lastContent:item.lastContent,
+              lastSendTime: item.lastSendTime,
+              unreadCount: item.unreadCount,
+              messages: []
+            };
+            if("GROUP"===chart.type){
+              chart.messages = item.groupMessages.toReversed();
+            }else{
+              chart.messages = item.privateMessages.toReversed();
+            }
+            tmp.push(chart);
+          }
+          this.$store.commit("resetMessageList",tmp)
+        }).catch((err) => {
+          console.log("pullMessageList",err)
+        });
       },
 			handleActiveItem(index) {
 				this.$store.commit("activeChat", index);
@@ -53,7 +87,7 @@
 			}
 		},
     mounted() {
-      this.$store.commit("pullMessageList");
+      this.pullSessionList();
     },
     computed: {
 			chatStore() {

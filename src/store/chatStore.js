@@ -195,50 +195,15 @@ export default {
 			if(chatList===undefined){
 				return;
 			}
-			state.activeIndex = -1;
-			for(const element of chatList) {
-				state.chats.push(element)
-			}
-			state.chats= chatList;
+			Vue.set(state,'activeIndex', -1)
+			// for(const element of chatList) {
+			// 	state.chats.push(element)
+			// }
+			Vue.set(state,'chats', chatList)
+			// state.chats= chatList;
 			if(chatList.length>0){
-				state.activeIndex = 0;
+				Vue.set(state,'activeIndex', 0)
 			}
-		},
-		pullMessageList(state) {
-			state.activeIndex = -1;
-			state.chats = [];
-			httpRequest({
-				url: '/chatSession/list',
-				method: 'get',
-			}).then((data) => {
-				if(data===undefined || data.length<1){
-					return;
-				}
-				let tmp = [];
-				for (const element of data) {
-					let item = element;
-					let chart = {
-						targetId:item.targetId,
-						type: item.chatType,
-						showName:item.name,
-						headImage: item.headImage,
-						lastContent:item.lastContent,
-						lastSendTime: item.lastSendTime,
-						unreadCount: item.unreadCount,
-						messages: []
-					};
-					if("GROUP"===chart.type){
-						chart.messages = item.groupMessages.toReversed();
-					}else{
-						chart.messages = item.privateMessages.toReversed();
-					}
-
-					tmp.push(chart);
-				}
-				this.commit("resetMessageList",tmp)
-			}).catch((err) => {
-				console.log("pullMessageList",err)
-			});
 		}
 	},
 

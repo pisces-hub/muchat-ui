@@ -36,7 +36,6 @@ export default {
       this.loginState = true;
       sessionStorage.setItem("accessToken",loginObj.accessToken);
       sessionStorage.setItem("refreshToken",loginObj.refreshToken);
-      this.$store.commit("pullMessageList");
       this.$message.success("登陆成功");
       this.$router.push("/home/chat");
     }
