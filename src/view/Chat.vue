@@ -74,9 +74,9 @@
             }
             tmp.push(chart);
           }
-		  if(chatList===undefined || chatList.length<1){
-				return;
-			}
+          if(tmp===undefined || tmp.length<1){
+            return;
+          }
           this.$store.commit("resetMessageList",tmp)
         }).catch((err) => {
         });
