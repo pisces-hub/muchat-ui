@@ -4,9 +4,7 @@ export default {
 
 	state: {
 		activeIndex: -1,
-		chats: [
-			{}
-		]
+		chats: []
 	},
 
 	method:{
@@ -192,9 +190,6 @@ export default {
 		},
 		resetMessageList(state,chatList) {
 			console.log("resetMessageList",state,chatList);
-			if(chatList===undefined){
-				return;
-			}
 			Vue.set(state,'activeIndex', -1)
 			// for(const element of chatList) {
 			// 	state.chats.push(element)

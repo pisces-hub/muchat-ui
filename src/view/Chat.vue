@@ -74,6 +74,9 @@
             }
             tmp.push(chart);
           }
+		  if(chatList===undefined || chatList.length<1){
+				return;
+			}
           this.$store.commit("resetMessageList",tmp)
         }).catch((err) => {
           console.log("pullMessageList",err)
