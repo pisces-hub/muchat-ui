@@ -4,9 +4,7 @@ export default {
 
 	state: {
 		activeIndex: -1,
-		chats: [
-			{}
-		]
+		chats: []
 	},
 
 	method:{
@@ -191,7 +189,7 @@ export default {
 			state.chats = [];
 		},
 		resetMessageList(state,chatList) {
-			console.log("resetMessageList111111111111",state,chatList);
+			console.log("resetMessageList",state,chatList);
 			if(chatList===undefined){
 				return;
 			}
