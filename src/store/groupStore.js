@@ -1,4 +1,5 @@
 import httpRequest from '../api/httpRequest.js'
+import {USER_STATE} from "@/api/enums";
 
 export default {
 
@@ -14,6 +15,10 @@ export default {
 			}).then((groups) => {
 				this.commit("setGroups",groups);
 			})
+		},
+		resetStore(state) {
+			state.groups=[];
+			state.activeIndex=-1;
 		},
 		setGroups(state,groups){
 			state.groups = groups;

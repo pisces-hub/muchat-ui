@@ -127,13 +127,12 @@ export default {
     this.$nextTick(() => {
       document.getElementById('messageScrollbar').addEventListener("mousewheel", this.handleScroll, true);
     });
-    this.loadMessages();
+    // this.loadMessages();
     this.$refs.scrollbar.wrap.scrollTop = this.$refs.scrollbar.wrap.scrollHeight;
   },
 
   methods: {
     async loadMessages() {
-      console.log("拉取历史消息：",this.friend);
       if(this.loading){
         return ;
       }
@@ -158,7 +157,6 @@ export default {
       if(this.chat.friendId===null || this.chat.groupId===null){
         return ;
       }
-      console.log("拉取历史消息，",this.chat,param)
       this.$http({
         url: this.histroyAction,
         method: 'get',
@@ -167,12 +165,10 @@ export default {
         if(messages==null || messages.length<1){
           this.loadAll = true;
         }else{
-          console.log(this.chat.messages);
           if(this.chat.messages===undefined || this.chat.messages===null){
             this.chat.messages = [];
           }
           messages.forEach(m => this.chat.messages.unshift(m));
-          console.log("拉取到历史消息了",messages,this.chat);
           this.$forceUpdate();
         }
         this.loading = false;

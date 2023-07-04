@@ -17,6 +17,11 @@ export default {
 				this.commit("refreshOnlineStatus");
 			})
 		},
+		resetStore(state) {
+			state.friends=[];
+			state.activeIndex=-1;
+			state.timer=null
+		},
 
 		setFriends(state, friends) {
 			state.friends = friends;

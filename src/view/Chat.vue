@@ -12,7 +12,6 @@
 					 :active="index === chatStore.activeIndex"></chat-item>
 				</div>
 			</el-scrollbar>
-<!--      <p v-text="chatStore.chats"></p>-->
       <div v-if="chatStore.chats.length<1" class="blank_list">
         空空如也～
       </div>
@@ -54,6 +53,7 @@
           if(data===undefined || data.length<1){
             return;
           }
+          console.log("chatSession/list",data)
           let tmp = [];
           for (const element of data) {
             let item = element;
@@ -76,7 +76,6 @@
           }
           this.$store.commit("resetMessageList",tmp)
         }).catch((err) => {
-          console.log("pullMessageList",err)
         });
       },
 			handleActiveItem(index) {

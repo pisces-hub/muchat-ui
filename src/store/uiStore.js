@@ -26,6 +26,31 @@ export default {
 		
 	},
 	mutations: {
+		resetStore(state) {
+			state.userInfo={ // 用户信息窗口
+				show: false,
+					user: {},
+				pos:{
+					x:0,
+						y:0
+				}
+			};
+			state.fullImage={ // 全屏大图
+				show: false,
+					url: ""
+			};
+			state.chatPrivateVideo={  // 私人视频聊天
+				show: false,
+					master: false, // 是否房主
+					friend:{},
+				offer:{}  // 对方发起带过过来的sdp信息
+			};
+			state.videoAcceptor={ // 视频呼叫选择
+				show:false,
+
+					friend:{}
+			};
+		},
 		showUserInfoBox(state,user){
 			state.userInfo.show = true;
 			state.userInfo.user = user;

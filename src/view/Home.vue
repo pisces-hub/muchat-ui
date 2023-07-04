@@ -221,6 +221,8 @@
           sessionStorage.removeItem("accessToken");
           sessionStorage.removeItem("refreshToken");
           sessionStorage.removeItem("token");
+          this.$store.commit("resetChatStore");
+          this.$store.commit("resetStore");
           this.$wsApi.closeWebSocket();
           location.href = "/";
         });

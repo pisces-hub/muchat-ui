@@ -191,7 +191,7 @@ export default {
 			state.chats = [];
 		},
 		resetMessageList(state,chatList) {
-			console.log("resetMessageList",state,chatList);
+			console.log("resetMessageList111111111111",state,chatList);
 			if(chatList===undefined){
 				return;
 			}
