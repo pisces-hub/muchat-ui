@@ -3,16 +3,6 @@
 			<el-form :model="loginForm"  status-icon :rules="rules" ref="loginForm"
                label-width="80px" class="web-ruleForm" @keyup.enter.native="submitForm('loginForm')">
 				<div class="login-brand">MuChat</div>
-<!--				<el-form-item label="用户名" prop="userName">-->
-<!--					<el-input type="userName" v-model="loginForm.userName" placeholder="请输入用户名" autocomplete="off"></el-input>-->
-
-<!--				</el-form-item>-->
-<!--				<el-form-item label="密码" prop="password">-->
-<!--					<el-input type="password" v-model="loginForm.password" placeholder="请输入密码" autocomplete="off"></el-input>-->
-<!--				</el-form-item>-->
-<!--				<el-form-item>-->
-<!--					<el-button type="primary" @click="submitForm('loginForm')">登陆</el-button>-->
-<!--				</el-form-item>-->
         <div style="text-align: center;">
           <a class="login-link" title="Gitee登录" @click="oauth2LoginHandler('GITEE')">
             <i class="operate-icon icon-gitee" />
@@ -28,24 +18,9 @@
         <div style="line-height: 40px;text-align: center;margin-top: 20px;">
           <el-button title="匿名模式下与常规模式数据不互通" class="anonymousLoginButton" @click="anonymousLogin()">
             <i class="class-anonymous-button-icon"></i>
-            <b>匿名模式(官方推荐)</b>
+            <b>匿名登录(官方推荐)</b>
           </el-button>
-<!--          <span class="el-form-item__label">其他方式登录：</span>-->
-<!--          <a class="login-link" title="Gitee" @click="oauth2LoginHandler('GITEE')">-->
-<!--            <i class="operate-icon icon-gitee" />-->
-<!--          </a>-->
-<!--          <a class="login-link" title="Github" @click="oauth2LoginHandler('GITHUB')">-->
-<!--            <i class="operate-icon icon-github" />-->
-<!--          </a>-->
-
-<!--          <i class="register">-->
-<!--            <router-link to="/register">注册</router-link>-->
-<!--          </i>-->
         </div>
-
-<!--				<div >-->
-<!--					-->
-<!--				</div>-->
 			</el-form>
 			
 	</div>
