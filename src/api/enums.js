@@ -14,8 +14,14 @@ const USER_STATE = {
 	FREE: 1,
 	BUSY: 2
 }
-
+const CONNECTOR_STATE = {
+	CLOSE: 0, //关闭
+	CONNECTING: 1, //连接中
+}
 export {
 	MESSAGE_TYPE,
-	USER_STATE
+	USER_STATE,
+	CONNECTOR_STATE
 }
+
+

@@ -54,9 +54,9 @@
               <div title="视频聊天" v-show="chat.type=='PRIVATE'" @click="showVideoBox()">
                 <i class="operate-icon icon-chat-video"/>
               </div>
-              <div title="聊天记录" v-show="chat.type=='PRIVATE'" @click="showHistoryBox()">
-                <i class="operate-icon icon-chat-history"/>
-              </div>
+<!--              <div title="聊天记录" v-show="chat.type=='PRIVATE'" @click="showHistoryBox()">-->
+<!--                <i class="operate-icon icon-chat-history"/>-->
+<!--              </div>-->
             </div>
             <textarea v-model="sendText" ref="sendBox" class="send-text-area" :disabled="lockMessage"
                       @keydown.enter="sendTextMessage()"></textarea>
@@ -65,6 +65,11 @@
             </div>
           </el-footer>
         </el-container>
+        <!--群聊边框-->
+<!--        <el-aside class="chat-group-side-box" width="150px">-->
+<!--          <chat-group-side-new :group="group" :groupMembers="groupMembers" @reload="loadGroup(group.id)">-->
+<!--          </chat-group-side-new>-->
+<!--        </el-aside>-->
         <el-aside class="chat-group-side-box" width="300px" v-show="showSide">
           <chat-group-side :group="group" :groupMembers="groupMembers" @reload="loadGroup(group.id)">
           </chat-group-side>
@@ -80,12 +85,12 @@
 
 <script>
 import ChatGroupSide from "./ChatGroupSide.vue";
+import ChatGroupSideNew from "./ChatGroupSideNew.vue";
 import ChatMessageItem from "./ChatMessageItem.vue";
 import FileUpload from "../common/FileUpload.vue";
 import Emotion from "../common/Emotion.vue";
 import ChatVoice from "./ChatVoice.vue";
 import ChatHistory from "./ChatHistory.vue";
-import Vue from "vue";
 
 export default {
   name: "chatPrivate",

@@ -56,6 +56,7 @@
 		<el-main class="content-box">
 			<router-view></router-view>
 		</el-main>
+    <connector-signal :num="connectorStore.signal"/>
 		<setting :visible="showSettingDialog" @close="closeSetting()"></setting>
 		<user-info v-show="uiStore.userInfo.show" :pos="uiStore.userInfo.pos" :user="uiStore.userInfo.user" @close="$store.commit('closeUserInfoBox')"></user-info>
 		<full-image :visible="uiStore.fullImage.show" :url="uiStore.fullImage.url" @close="$store.commit('closeFullImageBox')"></full-image>
@@ -80,7 +81,9 @@
 	import FullImage from '../components/common/FullImage.vue';
 	import ChatPrivateVideo from '../components/chat/ChatPrivateVideo.vue';
 	import ChatVideoAcceptor from '../components/chat/ChatVideoAcceptor.vue';
-	
+	import ConnectorSignal from '../components/common/ConnectorSignal.vue';
+  import connectorStore from "@/store/connectorStore";
+
 	
 	export default {
 		components: {
@@ -89,7 +92,8 @@
 			UserInfo,
 			FullImage,
 			ChatPrivateVideo,
-			ChatVideoAcceptor
+			ChatVideoAcceptor,
+      ConnectorSignal
 		},
 		data() {
 			return {
@@ -104,9 +108,16 @@
 				this.$store.commit("initStore");
 				this.$wsApi.createWebSocket(userInfo.id);
         this.accountType = userInfo.accountType;
-				this.$wsApi.onopen(() => {
-					this.pullUnreadMessage();
+				this.$wsApi.onopen(e => {
+					// this.pullUnreadMessage();
+          this.$store.commit("connectorSuccess",e);
 				});
+        this.$wsApi.onheart(e => {
+          this.$store.commit("heart",e);
+        });
+        this.$wsApi.onclose(e=>{
+          this.$store.commit("connectorClose",e);
+        });
 				this.$wsApi.onmessage((cmd,msgInfo) => {
 					if (cmd == 2) {
 						// 异地登录，强制下线
@@ -242,6 +253,9 @@
 			}
 		},
 		computed: {
+      connectorStore(){
+        return this.$store.state.connectorStore;
+      },
 			uiStore() {
 				return this.$store.state.uiStore;
 			},

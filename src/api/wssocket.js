@@ -7,6 +7,8 @@ let wsurl = "";
 let userId = null;
 let messageCallBack = null;
 let openCallBack = null;
+let closeCallBack = null;
+let heartCallBack = null;
 let hasLogin = false;
 
 let createWebSocket = (id) => {
@@ -27,9 +29,10 @@ let initWebSocket = async () => {
 				hasLogin = true;
 				heartCheck.start()
 				// 登录成功才算连接完成
-				openCallBack && openCallBack();
+				openCallBack && openCallBack(wsurl);
 			}
 			else if(sendInfo.cmd==1){
+				heartCallBack && heartCallBack(sendInfo);
 				// 重新开启心跳定时
 				heartCheck.reset();
 			} else {
@@ -39,6 +42,9 @@ let initWebSocket = async () => {
 		}
 		websock.onclose = function(e) {
 			isConnect = false; //断开后修改标识
+
+			closeCallBack && closeCallBack(e);
+			reConnect();
 		}
 		websock.onopen = function() {
 			isConnect = true;
@@ -48,7 +54,6 @@ let initWebSocket = async () => {
 				data: {userId: userId}
 			};
 			websock.send(JSON.stringify(loginInfo));
-			
 		}
 
 		// 连接发生错误的回调方法
@@ -57,11 +62,12 @@ let initWebSocket = async () => {
 			reConnect();
 		}
 	} catch (e) {
+		// this.commit("connectorClose",e);
 		reConnect(); //如果无法连接上webSocket 那么重新连接！可能会因为服务器重新部署，或者短暂断网等导致无法创建连接
 	}
 };
 
-let  findWsUrl = () =>{
+let findWsUrl = () =>{
 	let url = null;
 	return Vue.prototype.$http({
 		url: `/connector/node?protocol=WS`,
@@ -76,9 +82,9 @@ let  findWsUrl = () =>{
 let reConnect = () => {
 	if (isConnect) return; //如果已经连上就不在重连了
 	rec && clearTimeout(rec);
-	rec = setTimeout(function() { // 延迟5秒重连  避免过多次过频繁请求重连
+	rec = setTimeout(function() { // 延迟1秒重连  避免过多次过频繁请求重连
 		initWebSocket(wsurl);
-	}, 5000);
+	}, 1000);
 };
 //设置关闭连接
 let closeWebSocket = () => {
@@ -144,6 +150,13 @@ function onopen(callback) {
 	}
 }
 
+function onclose(callback) {
+	closeCallBack = callback;
+}
+function onheart(callback) {
+	heartCallBack = callback;
+}
+
 
 // 将方法暴露出去
 export {
@@ -151,5 +164,7 @@ export {
 	closeWebSocket,
 	sendMessage,
 	onmessage,
-	onopen
+	onopen,
+	onheart,
+	onclose
 }
