@@ -20,7 +20,7 @@
 
 ## 项目介绍
 
-`Muchat`是用JAVA语言开发的轻量、高性能、单机支持几十万至百万在线用户IM，主要目标降低即时通讯门槛，快速打造低成本接入在线IM系统，通过极简洁的消息格式就可以实现多端不同协议间的消息发送如内置(Http、Websocket、Tcp自定义IM协议)
+`Muchat`的前端工程
 
 
 #### 前端技术
@@ -33,20 +33,29 @@
 | Element    | 前端UI框架            | https://element.eleme.io               |
 
 
-#### 架构图
-
-![系统架构图](docs/images/architecture.jpeg)
-
 
 ### 搭建步骤
 
-> Windows环境部署
+```shell
+git clone https://gitee.com/pisces-hub/muchat-ui.git
 
-- 克隆`muchat`项目，并导入到IDEA中
-- 安装依赖：npm install
-- 运行项目：npm run serve
-- 打包：npm run build
+cd muchat-ui
 
+# Install dependencies
+npm i
+
+# Build packages
+npm build
+
+# Run the demo for development, it will automatically open the browser
+npm run serve
+```
+
+
+## Contributing
+
+- For bug reports, please use [Issues](https://gitee.com/pisces-hub/muchat-ui/issues)
+- For code contribution, please use [Pull Request](https://gitee.com/pisces-hub/muchat-ui/pulls).
 
 ## 联系方式
 
