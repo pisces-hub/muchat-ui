@@ -4,40 +4,50 @@ import {CONNECTOR_STATE} from "../api/enums.js"
 export default {
 	
 	state: {
-		url:null,
-		connectorTime:null,
-		closeTime:null,
-		state:-1,
-		errorMsg:null,
-		signal:0,
-		historyHeart:[],
+		node:{
+			url:null,
+			connectorTime:null,
+			closeTime:null,
+			state:-1,
+			errorMsg:null,
+			signal:0,
+			historyHeart:[],
+			heartCount:0,
+			reConnectCount:0
+		}
 	},
 
 	mutations: {
 		connectorSuccess(state,url) {
-			state.url = url;
-			state.status = CONNECTOR_STATE.CONNECTING;
-			state.connectorTime = Date.now();
-			state.signal = 80;
+			state.node.url = url;
+			state.node.connectorTime = Date.now();
+			state.node.signal = 80;
+			state.node.state = CONNECTOR_STATE.CONNECTING;
+			state.node.reConnectCount = 0;
+		},
+		onReConnect(state){
+			state.node.reConnectCount++;
 		},
 		connectorClose(state,errMsg) {
-			state.status = CONNECTOR_STATE.CLOSE;
-			state.closeTime = Date.now();
-			state.errorMsg = errMsg;
-			state.signal = 0;
+			state.node.status = CONNECTOR_STATE.CLOSE;
+			state.node.closeTime = Date.now();
+			state.node.errorMsg = errMsg;
+			state.node.signal = 0;
+			state.node.state = CONNECTOR_STATE.CLOSE;
 		},
 		heart(state,data) {
 			let currentTime = Date.now();
-			if(state.historyHeart.length>3){
-				state.historyHeart = state.historyHeart.slice(0,3);
+			state.node.heartCount++;
+			if(state.node.historyHeart.length>10){
+				state.node.historyHeart = state.node.historyHeart.slice(0,10);
 			}else{
-				state.historyHeart.unshift(currentTime);
+				state.node.historyHeart.unshift(currentTime);
 			}
-			//计算三次心跳间隔
+			//计算平均心跳间隔
 			let beforeTime = null;
 			let diff = 0;
-			for (var i in state.historyHeart) {
-				let time = state.historyHeart[i];
+			for (var i in state.node.historyHeart) {
+				let time = state.node.historyHeart[i];
 				if(beforeTime==null){
 					beforeTime = time;
 					continue;
@@ -45,25 +55,28 @@ export default {
 				diff += (beforeTime-time);
 				beforeTime = time;
 			}
-			let second = Math.abs(diff)/1000;
-			if(second>=0 & second<30){
-				state.signal = 100;
-			}else if(second<50){
-				state.signal = 85;
-			}else if(second<60){
-				state.signal = 60;
-			}else if(second<80){
-				state.signal = 30;
+			let svgSecond = 0;
+			if(state.node.historyHeart.length>1){
+				svgSecond = Math.abs(diff)/(state.node.historyHeart.length-1)/1000;
+			}
+			if(svgSecond>=0 && svgSecond<10){
+				state.node.signal = 100;
+			}else if(svgSecond<15){
+				state.node.signal = 85;
+			}else if(svgSecond<20){
+				state.node.signal = 60;
+			}else if(svgSecond<25){
+				state.node.signal = 30;
 			}else{
-				state.signal = 5;
+				state.node.signal = 5;
 			}
 		},
 		resetStore(state) {
-			state.url=null;
-			state.connectorTime=null;
-			state.closeTime = null;
-			state.signal = 0;
-			historyHeart:[];
+			state.node.url=null;
+			state.node.connectorTime=null;
+			state.node.closeTime = null;
+			state.node.signal = 0;
+			state.node.historyHeart=[];
 		},
 
 	}

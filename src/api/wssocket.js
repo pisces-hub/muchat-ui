@@ -9,6 +9,7 @@ let messageCallBack = null;
 let openCallBack = null;
 let closeCallBack = null;
 let heartCallBack = null;
+let reConnectCallBack = null;
 let hasLogin = false;
 
 let createWebSocket = (id) => {
@@ -84,6 +85,7 @@ let reConnect = () => {
 	rec && clearTimeout(rec);
 	rec = setTimeout(function() { // 延迟1秒重连  避免过多次过频繁请求重连
 		initWebSocket(wsurl);
+		reConnectCallBack && reConnectCallBack();
 	}, 1000);
 };
 //设置关闭连接
@@ -157,6 +159,10 @@ function onheart(callback) {
 	heartCallBack = callback;
 }
 
+function onReConnect(callback) {
+	reConnectCallBack = callback;
+}
+
 
 // 将方法暴露出去
 export {
@@ -166,5 +172,6 @@ export {
 	onmessage,
 	onopen,
 	onheart,
-	onclose
+	onclose,
+	onReConnect
 }
