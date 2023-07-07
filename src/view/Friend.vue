@@ -1,6 +1,6 @@
 <template>
 	<el-container>
-		<el-aside width="250px" class="l-friend-box">
+		<el-aside width="200px" class="l-friend-box">
 			<div class="l-friend-header">
 				<div class="l-friend-search">
 					<el-input width="200px" placeholder="搜索好友" v-model="searchText">

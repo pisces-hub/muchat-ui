@@ -7,7 +7,7 @@
     </el-header>
     <el-main style="padding: 0;">
       <el-container>
-        <el-container class="content-box">
+        <el-container  class="content-box" width="60vw">
 
           <el-main class="im-chat-main" id="chatScrollBox">
             <div class="im-chat-box">
@@ -65,12 +65,12 @@
             </div>
           </el-footer>
         </el-container>
-        <!--群聊边框-->
-<!--        <el-aside class="chat-group-side-box" width="150px">-->
-<!--          <chat-group-side-new :group="group" :groupMembers="groupMembers" @reload="loadGroup(group.id)">-->
-<!--          </chat-group-side-new>-->
-<!--        </el-aside>-->
-        <el-aside class="chat-group-side-box" width="300px" v-show="showSide">
+
+        <el-aside class="chat-group-side-box" width="10vw" v-show="showSide && groupType===1">
+          <chat-group-side-new :group="group" :groupMembers="groupMembers" @reload="loadGroup(group.id)">
+          </chat-group-side-new>
+        </el-aside>
+        <el-aside class="chat-group-side-box" width="15vw" v-show="showSide && groupType!==1">
           <chat-group-side :group="group" :groupMembers="groupMembers" @reload="loadGroup(group.id)">
           </chat-group-side>
         </el-aside>
@@ -100,7 +100,8 @@ export default {
     ChatGroupSide,
     Emotion,
     ChatVoice,
-    ChatHistory
+    ChatHistory,
+    ChatGroupSideNew
   },
   props: {
     chat: {
@@ -111,10 +112,11 @@ export default {
     return {
       friend: {},
       group: {},
+      groupType:0,
       groupMembers: [],
       sendText: "",
       showVoice: false, // 是否显示语音录制弹窗
-      showSide: false, // 是否显示群聊信息栏
+      showSide: true, // 是否显示群聊信息栏
       showEmotion: false, // 是否显示emoji表情
       emoBoxPos: { // emoji表情弹出位置
         x: 0,
@@ -422,6 +424,8 @@ export default {
         method: 'get'
       }).then((group) => {
         this.group = group;
+        this.groupType = group.groupType;
+        console.log("加载群聊",this.group);
         this.$store.commit("updateChatFromGroup", group);
         this.$store.commit("updateGroup", group);
       });

@@ -6,65 +6,43 @@
 			</el-input>
 		</div>
 		<el-scrollbar class="group-side-scrollbar">
-			<div class="group-side-member-list">
-				<div class="group-side-invite" v-if="group.groupType!==1">
-					<div class="invite-member-btn" title="邀请好友进群聊" @click="showAddGroupMember=true">
-						<i class="el-icon-plus"></i>
-					</div>
-
-					<div class="invite-member-text">邀请</div>
-					<add-group-member :visible="showAddGroupMember" :groupId="group.id" :members="groupMembers" @reload="$emit('reload')"
-					 @close="showAddGroupMember=false"></add-group-member>
-				</div>
-				<div v-for="(member) in groupMembers" :key="member.id">
-					<group-member class="group-side-member" v-show="!member.quit && member.aliasName.startsWith(searchText)" :member="member"
-					 :showDel="false"></group-member>
-				</div>
-			</div>
-			<el-divider content-position="center"></el-divider>
-			<el-form labelPosition="top" class="group-side-form" :model="group">
-				<el-form-item label="群聊名称">
-					<el-input v-model="group.name" disabled maxlength="20"></el-input>
-				</el-form-item>
-				<el-form-item label="群主">
-					<el-input :value="ownerName" disabled></el-input>
-				</el-form-item>
-				<el-form-item label="群公告">
-					<el-input v-model="group.notice" disabled type="textarea" maxlength="1024" placeholder="群主未设置"></el-input>
-				</el-form-item>
-				<el-form-item label="备注">
-					<el-input v-model="group.remark" :disabled="!editing" placeholder="群聊的备注仅自己可见" maxlength="20"></el-input>
-				</el-form-item>
-				<el-form-item label="我在本群的昵称">
-					<el-input v-model="group.aliasName" :disabled="!editing" placeholder="xx" maxlength="20"></el-input>
-				</el-form-item>
-
-				<div class="btn-group">
-					<el-button v-show="editing" type="success" @click="handleSaveGroup()">提交</el-button>
-					<el-button v-show="!editing" type="primary" @click="editing=!editing">编辑</el-button>
-					<el-button type="danger" v-show="!isOwner" v-if="group.groupType!==1" @click="handleQuit()">退出群聊</el-button>
-				</div>
-			</el-form>
+      <div class="infinite-list-wrapper" style="overflow:auto">
+        <ul
+            class="memberList"
+            v-infinite-scroll="loadGroupMembers"
+            infinite-scroll-disabled="disabled">
+          <li v-for="(member) in groupMembers" class="list-item" :key="member.id">
+            <group-member-new class="group-side-member" v-show="!member.quit && member.aliasName.startsWith(searchText)" :member="member"
+                          :showDel="false"></group-member-new>
+          </li>
+        </ul>
+        <p v-if="loading">加载中...</p>
+        <p v-if="!hasMore">没有更多了</p>
+      </div>
+<!--			<div class="group-side-member-list">-->
+<!--				<div v-for="(member) in groupMembers" :key="member.id">-->
+<!--					<group-member class="group-side-member" v-show="!member.quit && member.aliasName.startsWith(searchText)" :member="member"-->
+<!--					 :showDel="false"></group-member>-->
+<!--				</div>-->
+<!--			</div>-->
 		</el-scrollbar>
 
 	</div>
 </template>
 
 <script>
-	import AddGroupMember from '../group/AddGroupMember.vue';
-	import GroupMember from '../group/GroupMember.vue';
+	import GroupMemberNew from '../group/GroupMemberNew.vue';
 
 	export default {
 		name: "chatGroupSideNew",
 		components: {
-			AddGroupMember,
-			GroupMember
+      GroupMemberNew
 		},
 		data() {
 			return {
 				searchText: "",
-				editing: false,
-				showAddGroupMember: false
+        loading: false,
+        hasMore:true,
 			}
 		},
 		props: {
@@ -80,57 +58,34 @@
 				this.$emit('close');
 			},
 			loadGroupMembers() {
+        if(!this.hasMore){
+          return;
+        }
+        this.loading = true
 				this.$http({
 					url: `/group/members/${this.group.id}`,
 					method: "get"
 				}).then((members) => {
+          this.hasMore = false;
 					this.groupMembers = members;
 				})
 			},
-			handleSaveGroup() {
-				let vo = this.group;
-				this.$http({
-					url: "/group/modify",
-					method: "put",
-					data: vo
-				}).then((group) => {
-					this.$store.commit("updateGroup", group);
-					this.$emit('reload');
-					this.$message.success("修改成功");
-				})
-			},
-			handleQuit() {
-				this.$confirm('退出群聊后将不再接受群里的消息，确认退出吗？', '确认退出?', {
-					confirmButtonText: '确定',
-					cancelButtonText: '取消',
-					type: 'warning'
-				}).then(() => {
-					this.$http({
-						url: `/group/quit/${this.group.id}`,
-						method: 'delete'
-					}).then(() => {
-						this.$store.commit("removeGroup", this.group.id);
-						this.$store.commit("activeGroup", -1);
-						this.$store.commit("removeGroupChat", this.group.id);
-					});
-				})
-			},
-
 		},
 		computed: {
-			ownerName() {
-				let member = this.groupMembers.find((m) => m.userId == this.group.ownerId);
-				return member && member.aliasName;
-			},
-			isOwner() {
-				return this.group.ownerId == this.$store.state.userStore.userInfo.id;
-			}
-			
+
+
 		}
 	}
 </script>
 
 <style lang="scss">
+.memberList {
+  list-style-type:none;
+  padding: 0px;
+  li{
+    text-align: left;
+  }
+}
 	.chat-group-side {
 		position: relative;
 

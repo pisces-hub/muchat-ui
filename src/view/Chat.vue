@@ -1,6 +1,6 @@
 <template>
 	<el-container>
-		<el-aside width="250px" class="l-chat-box">
+		<el-aside width="12vw" class="l-chat-box">
 			<div class="l-chat-header">
 				<el-input width="200px" placeholder="搜索聊记录" v-model="searchText">
 					<el-button slot="append" @click="searchChatSessionList()" icon="el-icon-search"></el-button>

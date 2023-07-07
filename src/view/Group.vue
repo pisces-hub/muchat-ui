@@ -1,6 +1,6 @@
 <template>
 	<el-container class="im-group-box">
-		<el-aside width="250px" class="l-group-box">
+		<el-aside width="200px" class="l-group-box">
 			<div class="l-group-header">
 				<div class="l-group-search">
 					<el-input width="200px" placeholder="搜索群聊" v-model="searchText">

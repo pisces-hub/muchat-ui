@@ -2,7 +2,7 @@
   <div>
     <el-container class="ibox">
 
-      <el-aside width="80px" class="navi-bar">
+      <el-aside width="5vw" class="navi-bar" style="text-align: center;">
         <div class="user-head-image">
           <head-image :url="$store.state.userStore.userInfo.headImageThumb" :size="60"
                       @click.native="showSettingDialog=true">
