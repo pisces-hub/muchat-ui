@@ -9,7 +9,7 @@
 			<div class="chat-msg-content">
 				<div class="chat-msg-top">
 					<span>({{ipAddress}}){{showName}}</span>
-<!--					<chat-time :time="msgInfo.sendTime"></chat-time>-->
+					<chat-time :time="msgInfo.sendTime"></chat-time>
 				</div>
 				<div class="chat-msg-bottom" @contextmenu.prevent="showRightMenu($event)">
 					<span class="chat-msg-text" v-if="msgInfo.type==0" v-html="$emo.transform(msgInfo.content)"></span>
