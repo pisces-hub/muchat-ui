@@ -1,11 +1,12 @@
 <template>
 	<div class="group-member" @click="click" :style="{left: tranLeft, top: tranTop}">
     <div style="display: inline-block">
-      <head-image :url="member.headImage" :size="50" :id="member.userId">
+      <head-image :url="member.headImage" :size="30" :id="member.userId">
       </head-image>
     </div>
-		<span class="member-name">{{member.aliasName}}</span>
-
+		<span class="member-name" :class="member.onlineState?'onlineClass':''">
+      <span>{{member.aliasName}}</span>
+    </span>
 	</div>
 </template>
 
@@ -44,12 +45,15 @@
 </script>
 
 <style lang="scss">
+  .onlineClass{
+    color: #ef7b06;
+    font-weight: bold;
+  }
 	.group-member{
 		display: flex;
 		flex-direction: row;
 		align-items: center;
     text-align: left;
-    margin-left: 10px;
     margin-top: 5px;
     cursor: pointer;
 		width: 100%;
@@ -59,9 +63,10 @@
 			text-align: left;
 			width: 100%;
 			height: 30px;
+      margin-left: 8px;
 			line-height: 30px;
 			white-space: nowrap;
-			text-overflow:ellipsis; 
+			text-overflow:ellipsis;
 			overflow:hidden
 		}
 		

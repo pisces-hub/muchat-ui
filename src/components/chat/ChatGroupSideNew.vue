@@ -1,17 +1,29 @@
 <template>
 	<div class="chat-group-side">
+    <div label="群公告" style="height: 15vh;text-align: left;font-size: 15px;">
+      <p><b>群公告</b></p>
+      <p v-html="group.notice" style="font-size: 12px;"></p>
+      <p style="font-size: 12px;" v-if="group.notice==null || group.notice==undefined || group.notice==''">
+        群主未设置
+      </p>
+    </div>
+    <p style="text-align: left;font-size: 15px;"><b>群成员</b></p>
 		<div class="group-side-search">
-			<el-input placeholder="搜索群成员" v-model="searchText">
-				<el-button slot="append" icon="el-icon-search"></el-button>
-			</el-input>
+      <el-input
+          size="small"
+          placeholder="搜索群成员"
+          prefix-icon="el-icon-search"
+          v-model="searchText">
+      </el-input>
 		</div>
 		<el-scrollbar class="group-side-scrollbar">
       <div class="infinite-list-wrapper" style="overflow:auto">
         <ul
             class="memberList"
+            :infinite-scroll-disabled="disabled"
             v-infinite-scroll="loadGroupMembers"
-            infinite-scroll-disabled="disabled">
-          <li v-for="(member) in groupMembers" class="list-item" :key="member.id">
+            >
+          <li v-for="(member) in groupMembers" class="list-item infinite-list-item" :key="member.id">
             <group-member-new class="group-side-member" v-show="!member.quit && member.aliasName.startsWith(searchText)" :member="member"
                           :showDel="false"></group-member-new>
           </li>
@@ -19,12 +31,6 @@
         <p v-if="loading">加载中...</p>
         <p v-if="!hasMore">没有更多了</p>
       </div>
-<!--			<div class="group-side-member-list">-->
-<!--				<div v-for="(member) in groupMembers" :key="member.id">-->
-<!--					<group-member class="group-side-member" v-show="!member.quit && member.aliasName.startsWith(searchText)" :member="member"-->
-<!--					 :showDel="false"></group-member>-->
-<!--				</div>-->
-<!--			</div>-->
 		</el-scrollbar>
 
 	</div>
@@ -42,18 +48,39 @@
 			return {
 				searchText: "",
         loading: false,
+        disabled:true,
         hasMore:true,
+        pageNo:0,
+        pageSize:10,
+        groupMembers:[]
 			}
 		},
 		props: {
 			group: {
 				type: Object
-			},
-			groupMembers: {
-				type: Array
 			}
 		},
-		methods: {
+    mounted() {
+      this.loadGroupMembers();
+    },
+    methods: {
+      arrayUnique(arr){
+        let arry = Array.from(new Set(arr));
+        arry = arry.sort(function(a,b){
+          let x = a["onlineState"];
+          let y = b["onlineState"];
+          if(x && y){
+            return 0;
+          }else if(x){
+            return -1;
+          }else if(y){
+            return 1;
+          }else{
+            return 0;
+          }
+        });
+        return arry;
+      },
 			handleClose() {
 				this.$emit('close');
 			},
@@ -63,12 +90,37 @@
         }
         this.loading = true
 				this.$http({
-					url: `/group/members/${this.group.id}`,
-					method: "get"
-				}).then((members) => {
-          this.hasMore = false;
-					this.groupMembers = members;
-				})
+					url: `/group/membersV2`,
+					method: "get",
+          params:{
+            "groupId": this.group.id,
+            "pageNo":this.pageNo++,
+            "pageSize":this.pageSize,
+          }
+				}).then((data) => {
+          this.hasMore = data.hasNext;
+          let tmpArrays = this.groupMembers;
+          this.$store.commit("updateMember",{"groupId":this.group.id,"list":data.list});
+          for(const element of data.list) {
+            let flag = true;
+            for(let h of tmpArrays){
+              if( h.userId === element.userId){
+                flag = false;
+                break;
+              }
+            }
+            if(flag){
+              tmpArrays.push(element);
+            }
+          }
+          this.groupMembers = this.arrayUnique(tmpArrays);
+          this.loading=false;
+          if(this.hasMore){
+            this.disabled = false;
+          }
+				}).then(e=>{
+          this.loading = false;
+        })
 			},
 		},
 		computed: {

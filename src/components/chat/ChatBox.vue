@@ -65,17 +65,17 @@
             </div>
           </el-footer>
         </el-container>
-
-        <el-aside class="chat-group-side-box" width="10vw" v-show="showSide && groupType===1">
-          <chat-group-side-new :group="group" :groupMembers="groupMembers" @reload="loadGroup(group.id)">
+        <el-aside class="chat-group-side-box" width="12vw" v-if="this.chat.type=='GROUP' && showSide && groupType===1">
+          <chat-group-side-new :group="group" @reload="loadGroup(group.id)">
           </chat-group-side-new>
         </el-aside>
-        <el-aside class="chat-group-side-box" width="15vw" v-show="showSide && groupType!==1">
+        <el-aside class="chat-group-side-box" width="15vw" v-if="this.chat.type=='GROUP' && showSide && groupType===0">
           <chat-group-side :group="group" :groupMembers="groupMembers" @reload="loadGroup(group.id)">
           </chat-group-side>
         </el-aside>
       </el-container>
     </el-main>
+<!--    <p v-text="testMemberStore" style="position: absolute;"></p>/-->
     <emotion v-show="showEmotion" :pos="emoBoxPos" @emotion="handleEmotion"></Emotion>
     <chat-voice :visible="showVoice" @close="closeVoiceBox" @send="handleSendVoice"></chat-voice>
     <chat-history :visible="showHistory" :chat="chat" :friend="friend" :group="group" :groupMembers="groupMembers"
@@ -429,12 +429,12 @@ export default {
         this.$store.commit("updateChatFromGroup", group);
         this.$store.commit("updateGroup", group);
       });
-      this.$http({
-        url: `/group/members/${groupId}`,
-        method: 'get'
-      }).then((groupMembers) => {
-        this.groupMembers = groupMembers;
-      });
+      // this.$http({
+      //   url: `/group/members/${groupId}`,
+      //   method: 'get'
+      // }).then((groupMembers) => {
+      //   this.groupMembers = groupMembers;
+      // });
     },
     loadFriend(friendId) {
       // 获取对方最新信息
@@ -449,16 +449,25 @@ export default {
     },
     ipAddress(msgInfo){
       if (this.chat.type == 'GROUP') {
-        let member = this.groupMembers.find((m) => m.userId == msgInfo.sendId);
+        let member = this.findMemberInfo(msgInfo.sendId);
         return member ? member.ipAddress : "";
       } else {
         return msgInfo.sendId == this.mine.id ? this.mine.ipAddress : this.chat.ipAddress
       }
 
     },
+
+    findMemberInfo(userId){
+      let group = this.$store.state.groupMemberStore.groups[this.group.id];
+      let member = group==null?{}:group[userId];
+      if(member.aliasName === null){
+        console.log("K",userId,member);
+      }
+      return member;
+    },
     showName(msgInfo) {
       if (this.chat.type == 'GROUP') {
-        let member = this.groupMembers.find((m) => m.userId == msgInfo.sendId);
+        let member = this.findMemberInfo(msgInfo.sendId);
         return member ? member.aliasName : "";
       } else {
         return msgInfo.sendId == this.mine.id ? this.mine.nickName : this.chat.showName
@@ -467,7 +476,7 @@ export default {
     },
     headImage(msgInfo) {
       if (this.chat.type == 'GROUP') {
-        let member = this.groupMembers.find((m) => m.userId == msgInfo.sendId);
+        let member = this.findMemberInfo(msgInfo.sendId);
         return member ? member.headImage : "";
       } else {
         return msgInfo.sendId == this.mine.id ? this.mine.headImageThumb : this.chat.headImage
@@ -481,6 +490,9 @@ export default {
     }
   },
   computed: {
+    testMemberStore(){
+      return this.$store.state.groupMemberStore.groups;
+    },
     histroyAction() {
       return `/message/${this.chat.type.toLowerCase()}/history`;
     },
@@ -490,8 +502,14 @@ export default {
     title() {
       let title = this.chat.showName;
       if (this.chat.type == "GROUP") {
-        let size = this.groupMembers.filter(m => !m.quit).length;
-        title += `(${size})`;
+        // let size = this.groupMembers.filter(m => !m.quit).length;
+        let size = this.group.memberCount;
+        if(size==undefined || size==null || size <1){
+          return title;
+        }else{
+          title += `(${size})`;
+        }
+
       }
       return title;
     },

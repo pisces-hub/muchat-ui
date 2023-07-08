@@ -46,7 +46,9 @@
 		img {
 			position: relative;
 			overflow: hidden;
-			border-radius: 5%;
+			border-radius: 10%;
+      overflow-clip-margin: content-box;
+      overflow: clip;
 		}
 
 		img:before {

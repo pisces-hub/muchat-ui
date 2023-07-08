@@ -21,6 +21,7 @@ Vue.prototype.$emo = emotion; // emo表情
 Vue.prototype.$elm = element; // 元素操作
 Vue.prototype.$enums = enums; // 枚举
 Vue.config.productionTip = false;
+Vue.config.silent = true
 
 new Vue({
   el: '#app',
