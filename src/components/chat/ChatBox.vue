@@ -199,9 +199,10 @@ export default {
         url: this.messageAction,
         method: 'post',
         data: msgInfo
-      }).then((id) => {
+      }).then((data) => {
         msgInfo.loadStatus = 'ok';
-        msgInfo.id = id;
+        msgInfo.id = data.id;
+        msgInfo.content = data.content;
         this.$store.commit("insertMessage", msgInfo);
       })
     },
@@ -247,9 +248,10 @@ export default {
         url: this.messageAction,
         method: 'post',
         data: msgInfo
-      }).then((id) => {
+      }).then((data) => {
         msgInfo.loadStatus = 'ok';
-        msgInfo.id = id;
+        msgInfo.id = data.id;
+        msgInfo.content = data.content;
         this.$store.commit("insertMessage", msgInfo);
       })
     },
@@ -329,9 +331,10 @@ export default {
         url: this.messageAction,
         method: 'post',
         data: msgInfo
-      }).then((id) => {
+      }).then((data) => {
         this.$message.success("发送成功");
-        msgInfo.id = id;
+        msgInfo.id = data.id;
+        msgInfo.content = data.content;
         msgInfo.sendTime = new Date().getTime();
         msgInfo.sendId = this.$store.state.userStore.userInfo.id;
         msgInfo.selfSend = true;
@@ -367,10 +370,11 @@ export default {
         url: this.messageAction,
         method: 'post',
         data: msgInfo
-      }).then((id) => {
+      }).then((data) => {
         this.$message.success("发送成功");
         this.sendText = "";
-        msgInfo.id = id;
+        msgInfo.id = data.id;
+        msgInfo.content = data.content;
         msgInfo.sendTime = new Date().getTime();
         msgInfo.sendId = this.$store.state.userStore.userInfo.id;
         msgInfo.selfSend = true;
