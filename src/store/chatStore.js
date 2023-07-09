@@ -9,7 +9,6 @@ export default {
 
 	method:{
 		ifSameSession(s1,s2){
-
 			return false;
 		}
 	},
@@ -92,6 +91,28 @@ export default {
 				}
 			}
 		},
+		insertHistoryMessage(state,messageObj){
+			console.log("insertHistoryMessage1",messageObj)
+			let messages = messageObj.messages;
+			let chat = null;
+			for (let idx in state.chats) {
+				if (state.chats[idx].type == messageObj.chat.type &&
+					state.chats[idx].targetId === messageObj.chat.targetId) {
+					chat =  state.chats[idx];
+					break;
+				}
+			}
+			console.log("insertHistoryMessage2",chat);
+			if(chat==null){
+				console.error("insertHistoryMessage信息异常",messageObj);
+				return;
+			}
+
+			messages.forEach(m => chat.messages.unshift(m));
+		},
+
+
+
 		insertMessage(state, msgInfo) {
 			// 获取对方id或群id
 			let type = msgInfo.groupId!=null ? 'GROUP' : 'PRIVATE';
@@ -189,7 +210,6 @@ export default {
 			state.chats = [];
 		},
 		resetMessageList(state,chatList) {
-			console.log("resetMessageList",state,chatList);
 
 			Vue.set(state,'activeIndex', -1)
 			Vue.set(state,'chats', chatList)

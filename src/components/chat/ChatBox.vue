@@ -66,7 +66,7 @@
           </el-footer>
         </el-container>
         <el-aside class="chat-group-side-box" width="12vw" v-if="this.chat.type=='GROUP' && showSide && groupType===1">
-          <chat-group-side-new :group="group" @reload="loadGroup(group.id)">
+          <chat-group-side-new :group="group" :groupMembers="groupMembers" @reload="loadGroup(group.id)">
           </chat-group-side-new>
         </el-aside>
         <el-aside class="chat-group-side-box" width="15vw" v-if="this.chat.type=='GROUP' && showSide && groupType===0">
@@ -172,11 +172,12 @@ export default {
         if(messages==null || messages.length<1){
           this.loadAll = true;
         }else{
-          if(this.chat.messages===undefined || this.chat.messages===null){
-            this.chat.messages = [];
-          }
-          messages.forEach(m => this.chat.messages.unshift(m));
-          this.$forceUpdate();
+          // if(this.chat.messages===undefined || this.chat.messages===null){
+          //   this.chat.messages = [];
+          // }
+          // messages.forEach(m => this.chat.messages.unshift(m));
+          this.$store.commit("insertHistoryMessage",{"chat":this.chat,"messages":messages})
+          // this.$forceUpdate();
         }
         this.loading = false;
       }).catch(()=>{
@@ -425,16 +426,15 @@ export default {
       }).then((group) => {
         this.group = group;
         this.groupType = group.groupType;
-        console.log("加载群聊",this.group);
         this.$store.commit("updateChatFromGroup", group);
         this.$store.commit("updateGroup", group);
       });
-      // this.$http({
-      //   url: `/group/members/${groupId}`,
-      //   method: 'get'
-      // }).then((groupMembers) => {
-      //   this.groupMembers = groupMembers;
-      // });
+      this.$http({
+        url: `/group/members/${groupId}`,
+        method: 'get'
+      }).then((groupMembers) => {
+        this.groupMembers = groupMembers;
+      });
     },
     loadFriend(friendId) {
       // 获取对方最新信息
@@ -458,11 +458,7 @@ export default {
     },
 
     findMemberInfo(userId){
-      let group = this.$store.state.groupMemberStore.groups[this.group.id];
-      let member = group==null?{}:group[userId];
-      if(member.aliasName === null){
-        console.log("K",userId,member);
-      }
+      let member = this.groupMembers.find((m) => m.userId == userId);
       return member;
     },
     showName(msgInfo) {
@@ -490,9 +486,6 @@ export default {
     }
   },
   computed: {
-    testMemberStore(){
-      return this.$store.state.groupMemberStore.groups;
-    },
     histroyAction() {
       return `/message/${this.chat.type.toLowerCase()}/history`;
     },

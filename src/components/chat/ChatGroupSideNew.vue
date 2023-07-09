@@ -52,13 +52,15 @@
         hasMore:true,
         pageNo:0,
         pageSize:10,
-        groupMembers:[]
 			}
 		},
 		props: {
 			group: {
 				type: Object
-			}
+			},
+      groupMembers: {
+        type: Array
+      }
 		},
     mounted() {
       this.loadGroupMembers();
@@ -85,42 +87,7 @@
 				this.$emit('close');
 			},
 			loadGroupMembers() {
-        if(!this.hasMore){
-          return;
-        }
-        this.loading = true
-				this.$http({
-					url: `/group/membersV2`,
-					method: "get",
-          params:{
-            "groupId": this.group.id,
-            "pageNo":this.pageNo++,
-            "pageSize":this.pageSize,
-          }
-				}).then((data) => {
-          this.hasMore = data.hasNext;
-          let tmpArrays = this.groupMembers;
-          this.$store.commit("updateMember",{"groupId":this.group.id,"list":data.list});
-          for(const element of data.list) {
-            let flag = true;
-            for(let h of tmpArrays){
-              if( h.userId === element.userId){
-                flag = false;
-                break;
-              }
-            }
-            if(flag){
-              tmpArrays.push(element);
-            }
-          }
-          this.groupMembers = this.arrayUnique(tmpArrays);
-          this.loading=false;
-          if(this.hasMore){
-            this.disabled = false;
-          }
-				}).then(e=>{
-          this.loading = false;
-        })
+
 			},
 		},
 		computed: {

@@ -53,7 +53,6 @@
           if(data===undefined || data.length<1){
             return;
           }
-          console.log("chatSession/list",data)
           let tmp = [];
           for (const element of data) {
             let item = element;
@@ -65,13 +64,8 @@
               lastContent:item.lastContent,
               lastSendTime: item.lastSendTime,
               unreadCount: item.unreadCount,
-              messages: []
+              messages: item.messages.toReversed()
             };
-            if("GROUP"===chart.type){
-              chart.messages = item.groupMessages.toReversed();
-            }else{
-              chart.messages = item.privateMessages.toReversed();
-            }
             tmp.push(chart);
           }
           if(tmp===undefined || tmp.length<1){
