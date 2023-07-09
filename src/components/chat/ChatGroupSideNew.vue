@@ -2,8 +2,8 @@
 	<div class="chat-group-side">
     <div label="群公告" style="height: 15vh;text-align: left;font-size: 15px;">
       <p><b>群公告</b></p>
-      <p v-html="group.notice" style="font-size: 12px;"></p>
-      <p style="font-size: 12px;" v-if="group.notice==null || group.notice==undefined || group.notice==''">
+      <p v-html="group.notice" style="font-size: 12px;padding: 5px;"></p>
+      <p style="font-size: 12px;padding: 5px;" v-if="group.notice==null || group.notice==undefined || group.notice==''">
         群主未设置
       </p>
     </div>

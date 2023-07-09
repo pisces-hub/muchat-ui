@@ -1,6 +1,6 @@
 <template>
 	<div class="group-member" @click="click" :style="{left: tranLeft, top: tranTop}">
-    <div style="display: inline-block">
+    <div style="display: inline-block;height: 30px;">
       <head-image :url="member.headImage" :size="30" :id="member.userId">
       </head-image>
     </div>

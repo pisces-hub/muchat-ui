@@ -181,6 +181,7 @@
 			.msg-time {
 				font-size: 14px;
 				color: #888888;
+        font-weight: bold;
 				white-space: nowrap;
 			}
 		}
