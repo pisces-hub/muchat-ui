@@ -45,6 +45,11 @@ npm build
 npm run serve
 ```
 
+### 项目运行截图
+
+![聊天列表](docs/images/demo1.jpg)
+![聊天列表](docs/images/demo3.jpg)
+
 
 ## Contributing
 
