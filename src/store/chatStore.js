@@ -92,7 +92,6 @@ export default {
 			}
 		},
 		insertHistoryMessage(state,messageObj){
-			console.log("insertHistoryMessage1",messageObj)
 			let messages = messageObj.messages;
 			let chat = null;
 			for (let idx in state.chats) {
@@ -102,7 +101,6 @@ export default {
 					break;
 				}
 			}
-			console.log("insertHistoryMessage2",chat);
 			if(chat==null){
 				console.error("insertHistoryMessage信息异常",messageObj);
 				return;

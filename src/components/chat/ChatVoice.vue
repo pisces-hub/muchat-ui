@@ -1,13 +1,14 @@
 <template>
-	<el-dialog class="chat-voice" title="语音录制" :visible.sync="visible" width="600px" :before-close="handleClose">
+	<el-dialog class="chat-voice" :visible.sync="visible" width="600px" :before-close="handleClose">
 		<div v-show="mode=='RECORD'">
 			<div class="chat-voice-tip">{{stateTip}}</div>
-			<div>时长: {{state=='STOP'?0:parseInt(rc.duration)}}s</div>
+      <br/>
 		</div>
 		<audio v-show="mode=='PLAY'" :src="url" controls ref="audio" @ended="handleStopAudio()"></audio>
+    <el-progress :percentage="time_percentge" :text-inside="false" :stroke-width="16" :format="format"></el-progress>
 		<el-divider content-position="center"></el-divider>
 		<el-row class="chat-voice-btn-group">
-			<el-button round type="primary" v-show="state=='STOP'" @click="handleStartRecord()">开始录音</el-button>
+			<el-button round type="primary" v-show="state=='STOP'" @click="handleStartRecord()">点击开始</el-button>
 			<el-button round type="warning" v-show="state=='RUNNING'" @click="handlePauseRecord()">暂停录音</el-button>
 			<el-button round type="primary" v-show="state=='PAUSE'" @click="handleResumeRecord()">继续录音</el-button>
 			<el-button round type="danger" v-show="state=='RUNNING'||state=='PAUSE'" @click="handleCompleteRecord()">
@@ -44,7 +45,15 @@
 				url: ""
 			}
 		},
+    computed:{
+      time_percentge() {
+        return parseInt(this.rc.duration)%100;
+      }
+    },
 		methods: {
+      format(percentage) {
+        return parseInt(this.rc.duration)+"s";
+      },
 			handleClose() {
 				// 关闭前清除数据
 				this.rc.destroy();

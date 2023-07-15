@@ -2,7 +2,7 @@
   <div id="app">
 		<router-view></router-view>
     <div class="web-buttons-info">
-      <p>@Latest update time 2023-07-09</p>
+      <p>@Latest update time 2023-07-15</p>
     </div>
 
   </div>
