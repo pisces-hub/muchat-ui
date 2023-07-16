@@ -7,16 +7,14 @@
 		</div>
 		<el-scrollbar class="group-side-scrollbar">
 			<div class="group-side-member-list">
-				<div class="group-side-invite" v-if="group.groupType!==1">
+				<div class="group-side-invite">
 					<div class="invite-member-btn" title="邀请好友进群聊" @click="showAddGroupMember=true">
 						<i class="el-icon-plus"></i>
 					</div>
-
-					<div class="invite-member-text">邀请</div>
 					<add-group-member :visible="showAddGroupMember" :groupId="group.id" :members="groupMembers" @reload="$emit('reload')"
 					 @close="showAddGroupMember=false"></add-group-member>
 				</div>
-				<div v-for="(member) in groupMembers" :key="member.id">
+				<div style="vertical-align: center" v-for="(member) in groupMembers" :key="member.id">
 					<group-member class="group-side-member" v-show="!member.quit && member.aliasName.startsWith(searchText)" :member="member"
 					 :showDel="false"></group-member>
 				</div>
@@ -141,9 +139,13 @@
 			flex-wrap: wrap;
 			font-size: 16px;
 			text-align: center;
+      vertical-align: center;
 
 			.group-side-member {
-				margin-left: 15px;
+        vertical-align: center;
+        &:hover {
+          background-color: transparent;
+        }
 			}
 
 			.group-side-invite {
@@ -152,6 +154,7 @@
 				align-items: center;
 				width: 50px;
 				margin-left: 15px;
+        vertical-align: center;
 
 				.invite-member-btn {
 					width: 100%;
@@ -163,7 +166,7 @@
 					box-sizing: border-box;
 
 					&:hover {
-						border: #aaaaaa solid 1px;
+						border: #d91313 solid 1px;
 					}
 				}
 

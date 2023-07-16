@@ -37,7 +37,8 @@ export default {
       sessionStorage.setItem("accessToken",loginObj.accessToken);
       sessionStorage.setItem("refreshToken",loginObj.refreshToken);
       this.$message.success("登陆成功");
-      this.$router.push("/home/chat");
+      // this.$router.push("/home/chat");
+      this.$router.push({path:"/home/chat",query:{"reload":'1'}});
     }
   },
   methods:{

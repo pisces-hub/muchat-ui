@@ -20,11 +20,11 @@ export default {
 		openChat(state, chatInfo) {
 			for (let i in state.chats) {
 				if (state.chats[i].type === chatInfo.type &&
-					state.chats[i].targetId === chatInfo.targetId) {
-					let newChat = state.chats[i];
-					// 放置头部
-					state.chats.splice(i, 1);
-					state.chats.unshift(newChat);
+					state.chats[i].targetId === chatInfo.targetId && i===0) {
+					// let newChat = state.chats[i];
+					// // 放置头部
+					// state.chats.splice(i, 1);
+					// state.chats.unshift(newChat);
 					return;
 				}
 			}
@@ -54,22 +54,30 @@ export default {
 
 		chatUnshift(state,newChat){
 			let activeChat = state.activeIndex>=0?state.chats[state.activeIndex]:null;
-			state.chats.unshift(newChat);
-			// 选中会话保持不变
-			if(activeChat){
-				state.chats.forEach((chat,idx)=>{
-					if(activeChat.type == chat.type
-						&& activeChat.targetId == chat.targetId){
-						state.activeIndex = idx;
-					}
-				})
+			let isNew = true;
+			console.log("chatUnshift,newChat=",newChat,",state.chats=",state.chats)
+			for (let i in state.chats) {
+				if (state.chats[i].type === newChat.type &&
+					state.chats[i].targetId === newChat.targetId) {
+					// return;
+					let tmp = state.chats[i];
+					state.chats[i]=state.chats[0];
+					state.chats[0]=tmp;
+					isNew = false;
+					break;
+				}
 			}
+			if(isNew){
+				state.chats.unshift(newChat);
+			}
+			state.activeIndex = 0;
 		},
 		activeChat(state, idx) {
 			state.activeIndex = idx;
 			state.chats[idx].unreadCount = 0;
 		},
 		removeChat(state, idx) {
+			console.log("删除会话")
 			state.chats.splice(idx, 1);
 			if (state.activeIndex >= state.chats.length) {
 				state.activeIndex = state.chats.length - 1;

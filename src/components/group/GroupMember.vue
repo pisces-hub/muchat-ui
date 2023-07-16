@@ -1,9 +1,8 @@
 <template>
 	<div class="group-member" @click="click" :style="{left: tranLeft, top: tranTop}">
-		<head-image :url="member.headImage" :size="50" :id="member.userId">
+		<head-image :title="member.aliasName" :url="member.headImage" :size="50" :id="member.userId">
 			<div v-if="showDel" @click.stop="handleDelete()" class="btn-kick el-icon-error"></div>
 		</head-image>
-		<div class="member-name">{{member.aliasName}}</div>
 
 	</div>
 </template>
@@ -71,7 +70,7 @@
 		
 		&:hover .btn-kick{
 			display: block;
-			color: #ce1818;
+			color: #d51111;
 		}
 	}
 </style>

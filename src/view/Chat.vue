@@ -79,11 +79,25 @@
 				this.$store.commit("activeChat", index);
 			},
 			handleDelItem(chat, index) {
-				this.$store.commit("removeChat", index);
+        httpRequest({
+          url: '/chatSession/del',
+          method: 'delete',
+          data:{
+            "targetId":chat.targetId,
+            "chatType":chat.type
+          }
+        }).then((data) => {
+          this.$store.commit("removeChat", index);
+        });
+
 			}
 		},
     mounted() {
-      this.pullSessionList();
+      let query = this.$route.query;
+      if(query.reload=='1'){
+        this.pullSessionList();
+      }
+
     },
     computed: {
 			chatStore() {

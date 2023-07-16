@@ -67,7 +67,6 @@
 								<div class="invite-member-btn" title="邀请好友进群聊" @click="handleInviteMember()">
 									<i class="el-icon-plus"></i>
 								</div>
-								<div class="invite-member-text">邀请</div>
 								<add-group-member :visible="showAddGroupMember" :groupId="activeGroup.id" :members="groupMembers" @reload="loadGroupMembers"
 								 @close="handleCloseAddGroupMember"></add-group-member>
 							</div>
@@ -221,8 +220,8 @@
 					headImage: this.activeGroup.headImage,
 				};
 				this.$store.commit("openChat", chat);
-				this.$store.commit("activeChat", 0);
-				this.$router.push("/home/chat");
+				// this.$store.commit("activeChat", 0);
+				this.$router.push({path:"/home/chat",query:{"reload":'0'}});
 			},
 			loadGroupMembers() {
 				this.$http({
@@ -361,7 +360,12 @@
 					text-align: center;
 
 					.r-group-member {
-						margin-right: 15px;
+            vertical-align: center;
+            padding-left: 10px;
+            cursor: pointer;
+            &:hover {
+              background-color: transparent;
+            }
 					}
 
 					.r-group-invite {
@@ -369,6 +373,7 @@
 						flex-direction: column;
 						align-items: center;
 						width: 60px;
+            margin-left: 10px;
 
 						.invite-member-btn {
 							width: 100%;
