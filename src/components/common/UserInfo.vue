@@ -1,5 +1,5 @@
 <template>
-	<div class="user-info-mask" @click="$emit('close')">
+	<div id="user-info-maskId" class="user-info-mask" @click="$emit('close')">
 		<div class="user-info"  :style="{left: pos.x+'px',top: pos.y+'px'}" @click.stop>
 			<div class="user-info-box">
 				<div class="avatar">

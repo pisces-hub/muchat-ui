@@ -3,7 +3,6 @@
     <el-avatar :src="url">
       <img src="../../assets/default_head_man.png"/>
     </el-avatar>
-<!--		<img :src="url" :style="{width: size+'px',height: size+'px',cursor: 'pointer'}" />-->
 		<slot></slot>
 	</div>
 </template>

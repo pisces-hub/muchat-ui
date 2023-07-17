@@ -112,8 +112,8 @@
 			}
 
 			.online-status {
-				font-size: 12px;
-				font-weight: 600;
+				//font-size: 12px;
+				//font-weight: 600;
 
 				&.online {
 					color: #5fb878;

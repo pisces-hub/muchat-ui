@@ -7,7 +7,7 @@
         群主未设置
       </p>
     </div>
-    <p style="text-align: left;font-size: 15px;"><b>群成员</b></p>
+    <el-divider content-position="center"></el-divider>
 		<div class="group-side-search">
       <el-input
           size="small"
@@ -24,8 +24,8 @@
             v-infinite-scroll="loadGroupMembers"
             >
           <li v-for="(member) in groupMembers" class="list-item infinite-list-item" :key="member.id">
-            <group-member-new class="group-side-member" v-show="!member.quit && member.aliasName.startsWith(searchText)" :member="member"
-                          :showDel="false"></group-member-new>
+            <group-member class="group-side-member" v-show="!member.quit && member.aliasName.startsWith(searchText)" :member="member"
+                          :showDel="false"></group-member>
           </li>
         </ul>
         <p v-if="loading">加载中...</p>
@@ -37,12 +37,12 @@
 </template>
 
 <script>
-	import GroupMemberNew from '../group/GroupMemberNew.vue';
+	import GroupMember from '../group/GroupMember.vue';
 
 	export default {
 		name: "chatGroupSideNew",
 		components: {
-      GroupMemberNew
+      GroupMember
 		},
 		data() {
 			return {
@@ -118,6 +118,7 @@
 
 			.group-side-member {
 				margin-left: 15px;
+        cursor: pointer;
 			}
 
 			.group-side-invite {

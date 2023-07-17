@@ -3,7 +3,7 @@
     <el-header height="60px">
       <span>{{ title }}</span>
       <span title="群聊信息" v-show="this.chat.type=='GROUP'" class="btn-side el-icon-more"
-            @click="showSide=!showSide"></span>
+            @click="showSide=!showSide;anonymouModeShowSide=!anonymouModeShowSide"></span>
     </el-header>
     <el-main style="padding: 0;">
       <el-container>
@@ -65,7 +65,7 @@
             </div>
           </el-footer>
         </el-container>
-        <el-aside class="chat-group-side-box" width="12vw" v-if="this.chat.type=='GROUP' && showSide && groupType===1">
+        <el-aside class="chat-group-side-box" width="13vw" v-if="this.chat.type=='GROUP' && anonymouModeShowSide && groupType===1">
           <chat-group-side-new :group="group" :groupMembers="groupMembers" @reload="loadGroup(group.id)">
           </chat-group-side-new>
         </el-aside>
@@ -75,7 +75,6 @@
         </el-aside>
       </el-container>
     </el-main>
-<!--    <p v-text="testMemberStore" style="position: absolute;"></p>/-->
     <emotion v-show="showEmotion" :pos="emoBoxPos" @emotion="handleEmotion"></Emotion>
     <chat-voice :visible="showVoice" @close="closeVoiceBox" @send="handleSendVoice"></chat-voice>
     <chat-history :visible="showHistory" :chat="chat" :friend="friend" :group="group" :groupMembers="groupMembers"
@@ -116,7 +115,8 @@ export default {
       groupMembers: [],
       sendText: "",
       showVoice: false, // 是否显示语音录制弹窗
-      showSide: true, // 是否显示群聊信息栏
+      showSide: false, // 是否显示群聊信息栏
+      anonymouModeShowSide: true, // 是否显示群聊信息栏
       showEmotion: false, // 是否显示emoji表情
       emoBoxPos: { // emoji表情弹出位置
         x: 0,

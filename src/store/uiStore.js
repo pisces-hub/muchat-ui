@@ -57,10 +57,24 @@ export default {
 			
 		},
 		setUserInfoBoxPos(state,pos){
+			let compontW = 300;
+			let compontH = 200;
 			let w =  document.documentElement.clientWidth;
 			let h =  document.documentElement.clientHeight;
-			state.userInfo.pos.x = Math.min(pos.x,w-350);
-			state.userInfo.pos.y = Math.min(pos.y,h-200); 
+			let x = w/2-compontW/2;
+			let y = h/2-compontH/2;
+			if(x<0 || x>w){
+				x = w/2;
+			}
+			if(y<0 || y>h){
+				y = h/2;
+			}
+
+			console.log("屏幕:",w,",",h,".鼠标：",pos.x,',',pos.y,",xy=",x,",",y)
+			state.userInfo.pos.x = x;
+			state.userInfo.pos.y = y;
+			// state.userInfo.pos.y = Math.min(pos.y,h-200);
+
 		},
 		closeUserInfoBox(state){
 			state.userInfo.show = false;
