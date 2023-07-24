@@ -114,10 +114,11 @@ export default {
       this.$store.commit("setUserInfo", userInfo);
       this.$store.commit("setUserState", this.$enums.USER_STATE.FREE);
       this.$store.commit("initStore");
-      this.$wsApi.createWebSocket(userInfo.id);
+
+      let accessToken = sessionStorage.getItem("accessToken");
+      this.$wsApi.createWebSocket(accessToken);
       this.accountType = userInfo.accountType;
       this.$wsApi.onopen(e => {
-        // this.pullUnreadMessage();
         this.$store.commit("connectorSuccess", e);
       });
       this.$wsApi.onheart(e => {
