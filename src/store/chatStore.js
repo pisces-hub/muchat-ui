@@ -28,7 +28,6 @@ export default {
 					return;
 				}
 			}
-			state.activeIndex = -1;
 			httpRequest({
 				url: '/chatSession/save',
 				method: 'post',
@@ -59,10 +58,12 @@ export default {
 			for (let i in state.chats) {
 				if (state.chats[i].type === newChat.type &&
 					state.chats[i].targetId === newChat.targetId) {
-					// return;
-					let tmp = state.chats[i];
-					state.chats[i]=state.chats[0];
-					state.chats[0]=tmp;
+					if(i!==0){
+						// return;
+						let tmp = state.chats[i];
+						state.chats[i]=state.chats[0];
+						state.chats[0]=tmp;
+					}
 					isNew = false;
 					break;
 				}

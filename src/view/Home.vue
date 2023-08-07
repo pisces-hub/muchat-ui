@@ -217,8 +217,8 @@ export default {
         url: `/group/find/${msg.groupId}`,
         method: 'get'
       }).then((group) => {
-        this.insertGroupMessage(group, msg);
         this.$store.commit("addGroup", group);
+        this.insertGroupMessage(group, msg);
       })
     },
     insertGroupMessage(group, msg) {
